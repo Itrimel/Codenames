@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTextStream>
+#include <QFile>
+#include <QRandomGenerator>
+#include "qcard.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,5 +21,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    typeCarte quicestquicommence;
+    typeCarte quicestquicontinue;
 };
 #endif // MAINWINDOW_H
