@@ -3,6 +3,9 @@
 
 #define NB_MOTS 398
 
+extern char _binary_liste_mots_txt_start;
+extern char _binary_liste_mots_txt_end;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -10,12 +13,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     //Génération de la liste de mots
-    QFile liste_mots_fichier("liste_mots.txt");
-    if(! liste_mots_fichier.open(QIODevice::ReadOnly)){
-        std::cout << "fichier données non présent, arrêt du programme" << std::endl;
-        abort();
-    }
-    QTextStream liste_mots_stream(&liste_mots_fichier);
+    //Commande pour convertir le fichier .txt en .o : objcopy --input binary --output elf64-x86-64 --binary-architecture i386:x86-64 liste_mots.txt liste_mots.o
+    QByteArray liste_mots_data(&_binary_liste_mots_txt_start,_binary_liste_mots_txt_end-_binary_liste_mots_txt_start);
+    QTextStream liste_mots_stream(liste_mots_data);
     std::vector<QString> liste_mots;
     for(int i=0; i<NB_MOTS; i++){
         liste_mots.emplace_back(liste_mots_stream.readLine());
