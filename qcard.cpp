@@ -36,7 +36,7 @@ void QCard::paintEvent(QPaintEvent* event){
         couleur_centre = QColor(184,184,184);
         break;
     case typeCarte::Neutre :
-        couleur_bord = QColor(255,255,0);
+        couleur_bord = QColor(181,132,0);
         couleur_centre = QColor(237,237,178);
     }
 
@@ -61,7 +61,7 @@ void QCard::paintEvent(QPaintEvent* event){
     painter.restore();
     QRect zone_texte = QRect(width()/6.0,height()/6.0,width()*2/3.0,height()*2/3.0);
     QFont font_to_use = painter.font();
-    painter.setPen(type==Neutre ? QColor(181,132,0) : couleur_bord);
+    painter.setPen(couleur_bord);
     findRightFontSize(mot,zone_texte,font_to_use);
     font_to_use.setPointSizeF((*std::min_element(liste_cartes->begin(),liste_cartes->end(),compQCardsFontSizes))->getRightFontSize());
     painter.setFont(font_to_use);
