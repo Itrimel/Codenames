@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <iostream>
 #include <QFontMetrics>
+#include <algorithm>
 
 enum typeCarte{
     Rouge,
@@ -17,12 +18,12 @@ class QCard : public QWidget
 {
     Q_OBJECT
 public:
-    QCard(typeCarte type, QString mot, QWidget *parent = nullptr):
+    QCard(typeCarte type, QString mot, std::vector<QCard*>* liste_cartes, QWidget *parent = nullptr):
+        QWidget(parent),
         mot(mot),
         type(type),
-        QWidget(parent){
-        //Capitaliser le mot
-    };
+        liste_cartes(liste_cartes){};
+    double inline getRightFontSize() const {return rightFontSize;}
 virtual
     bool hasHeightForWidth() const override{return true;}
     int heightForWidth(int w) const override{return (int)0.7*w;}
@@ -33,6 +34,9 @@ protected:
 private:
     const QString mot;
     const typeCarte type;
+    void findRightFontSize(QString, QRect, QFont);
+    double rightFontSize = 1;
+    const std::vector<QCard*>* liste_cartes;
 
 signals:
 

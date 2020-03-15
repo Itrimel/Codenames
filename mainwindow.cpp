@@ -50,8 +50,10 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     //Construction de l'affichage
+    std::vector<QCard*>* liste_cartes = new std::vector<QCard*>;
     for(int i=0; i<25; i++){
-        ui->gridLayout->addWidget(new QCard(lay[i],liste_mots[pos[i]],ui->centralwidget),i%5,i/5);
+        liste_cartes->emplace_back(new QCard(lay[i],liste_mots[pos[i]],liste_cartes,ui->centralwidget));
+        ui->gridLayout->addWidget(liste_cartes->back(),i%5,i/5);
     }
 }
 

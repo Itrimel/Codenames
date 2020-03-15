@@ -1,19 +1,21 @@
 #include "qcard.h"
 
 
-QFont static findRightFontSize(QString mot, QRect rect, QFont font){
+bool static compQCardsFontSizes(const QCard* A,const QCard* B){
+    return A->getRightFontSize()<B->getRightFontSize();
+}
+
+void QCard::findRightFontSize(QString mot, QRect rect, QFont font){
     double w,h,scale;
     QFontMetrics test(font);
     QRect temp = test.boundingRect(mot);
     w=temp.width();
     h=temp.height();
     scale=0.95*std::min(rect.width()/w,rect.height()/h);
-    font.setPointSizeF(font.pointSizeF()*scale);
-    return font;
+    rightFontSize = font.pointSizeF()*scale;
 }
 
 void QCard::paintEvent(QPaintEvent* event){
-
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
     painter.save();
@@ -57,10 +59,11 @@ void QCard::paintEvent(QPaintEvent* event){
     painter.drawPath(contour);
 
     painter.restore();
-    QRect zone_texte = QRect(width()/5.0,height()/5.0,width()*3/5.0,height()*3/5.0);
+    QRect zone_texte = QRect(width()/6.0,height()/6.0,width()*2/3.0,height()*2/3.0);
+    QFont font_to_use = painter.font();
     painter.setPen(type==Neutre ? QColor(181,132,0) : couleur_bord);
-    painter.setFont(findRightFontSize(mot,zone_texte,painter.font()));
+    findRightFontSize(mot,zone_texte,font_to_use);
+    font_to_use.setPointSizeF((*std::min_element(liste_cartes->begin(),liste_cartes->end(),compQCardsFontSizes))->getRightFontSize());
+    painter.setFont(font_to_use);
     painter.drawText(zone_texte,Qt::AlignCenter,mot);
-    //painter.drawText(QPointF(width()/2.0,height()/2.0),mot);
-
 }
