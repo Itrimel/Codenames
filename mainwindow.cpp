@@ -12,6 +12,16 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    QLabel *label = new QLabel(parent);
+    label->setText("<font color=red>Non connecté</font>");
+    ui->menubar->setCornerWidget(label);
+
+    creerNouvellePartie();
+
+    connect(ui->actionNouvelle_partie,&QAction::triggered,this,&MainWindow::nouvPartie);
+}
+
+void MainWindow::creerNouvellePartie(){
     //Génération de la liste de mots
     //Commande pour convertir le fichier .txt en .o : objcopy --input binary --output elf64-x86-64 --binary-architecture i386:x86-64 liste_mots.txt liste_mots.o
     QByteArray liste_mots_data(&_binary_liste_mots_txt_start,_binary_liste_mots_txt_end-_binary_liste_mots_txt_start);
@@ -50,15 +60,28 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     //Construction de l'affichage
-    std::vector<QCard*>* liste_cartes = new std::vector<QCard*>;
+    liste_cartes->clear();
     for(int i=0; i<25; i++){
         liste_cartes->emplace_back(new QCard(lay[i],liste_mots[pos[i]],liste_cartes,ui->centralwidget));
         ui->gridLayout->addWidget(liste_cartes->back(),i%5,i/5);
     }
 }
 
+void MainWindow::supprimerPartieEnCours(){
+    for(auto i = liste_cartes->begin(); i < liste_cartes->end(); i++){
+        ui->gridLayout->removeWidget(*i);
+        delete *i;
+    }
+}
+
+void MainWindow::nouvPartie(){
+    supprimerPartieEnCours();
+    creerNouvellePartie();
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete liste_cartes;
 }
 

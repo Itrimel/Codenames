@@ -55,7 +55,11 @@ void QCard::paintEvent(QPaintEvent* event){
     contour.lineTo(0,scale);
 
     painter.setPen(QPen(couleur_bord,0.03));
-    painter.fillPath(contour,couleur_centre);
+    if(drawGuessed){
+        painter.fillPath(contour,couleur_bord);
+    } else {
+        painter.fillPath(contour,couleur_centre);
+    }
     painter.drawPath(contour);
 
     painter.restore();
@@ -66,4 +70,13 @@ void QCard::paintEvent(QPaintEvent* event){
     font_to_use.setPointSizeF((*std::min_element(liste_cartes->begin(),liste_cartes->end(),compQCardsFontSizes))->getRightFontSize());
     painter.setFont(font_to_use);
     painter.drawText(zone_texte,Qt::AlignCenter,mot);
+}
+
+void QCard::enterEvent(QEvent* event){
+    drawGuessed=false;
+    this->update();
+}
+void QCard::leaveEvent(QEvent* event){
+    drawGuessed=isGuessed;
+    this->update();
 }

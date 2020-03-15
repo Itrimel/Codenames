@@ -30,6 +30,8 @@ virtual
 
 protected:
     void paintEvent(QPaintEvent *event) override;
+    void enterEvent(QEvent*) override;
+    void leaveEvent(QEvent*) override;
 
 private:
     const QString mot;
@@ -37,6 +39,8 @@ private:
     void findRightFontSize(QString, QRect, QFont);
     double rightFontSize = 1;
     const std::vector<QCard*>* liste_cartes;
+    bool isGuessed = false;
+    bool drawGuessed = false;
 
 signals:
 
