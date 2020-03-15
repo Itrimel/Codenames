@@ -57,9 +57,10 @@ void QCard::paintEvent(QPaintEvent* event){
     painter.drawPath(contour);
 
     painter.restore();
-    painter.setPen(type==Neutre ? Qt::black : couleur_bord);
-    painter.setFont(findRightFontSize(mot,QRect(width()/4.0,height()/4.0,width()/2.0,height()/2.0),painter.font()));
-    painter.drawText(QRectF(width()/4.0,height()/4.0,width()/2.0,height()/2.0),Qt::AlignCenter,mot);
+    QRect zone_texte = QRect(width()/5.0,height()/5.0,width()*3/5.0,height()*3/5.0);
+    painter.setPen(type==Neutre ? QColor(181,132,0) : couleur_bord);
+    painter.setFont(findRightFontSize(mot,zone_texte,painter.font()));
+    painter.drawText(zone_texte,Qt::AlignCenter,mot);
     //painter.drawText(QPointF(width()/2.0,height()/2.0),mot);
 
 }
