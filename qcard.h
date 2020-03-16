@@ -11,7 +11,8 @@ enum typeCarte{
     Rouge,
     Bleu,
     Noir,
-    Neutre
+    Neutre,
+    SaisPas
 };
 
 class QCard : public QWidget
