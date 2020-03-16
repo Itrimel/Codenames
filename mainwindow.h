@@ -6,7 +6,10 @@
 #include <QFile>
 #include <QRandomGenerator>
 #include <QLabel>
+#include <QMessageBox>
+#include <QNetworkInterface>
 #include "qcard.h"
+#include "qglobaipdiag.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,5 +32,7 @@ private:
     std::vector<QCard*>* liste_cartes = new std::vector<QCard*>;
 private slots:
     void nouvPartie();
+    void adresseIPLocale();
+    void adresseIPGlobale();
 };
 #endif // MAINWINDOW_H

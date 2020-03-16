@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
     creerNouvellePartie();
 
     connect(ui->actionNouvelle_partie,&QAction::triggered,this,&MainWindow::nouvPartie);
+    connect(ui->actionObtenir_adresse_IP,&QAction::triggered,this,&MainWindow::adresseIPLocale);
+    connect(ui->actionObtenir_adresse_IP_globale,&QAction::triggered,this,&MainWindow::adresseIPGlobale);
 }
 
 void MainWindow::creerNouvellePartie(){
@@ -77,6 +79,27 @@ void MainWindow::supprimerPartieEnCours(){
 void MainWindow::nouvPartie(){
     supprimerPartieEnCours();
     creerNouvellePartie();
+}
+
+void MainWindow::adresseIPLocale(){
+    QMessageBox infoIP(ui->centralwidget);
+    auto list_adresses = QNetworkInterface::allAddresses();
+    QList<QHostAddress> list = QNetworkInterface::allAddresses();
+    QString adresse_loc;
+
+    for(int nIter=0; nIter<list.count(); nIter++){
+        if(!list[nIter].isLoopback())
+            if (list[nIter].protocol() == QAbstractSocket::IPv4Protocol )
+                adresse_loc = list[nIter].toString();
+    }
+
+    infoIP.setText("L'adresse IP locale du serveur est : "+adresse_loc+QString(":%1").arg(PORT_SERVEUR));
+    infoIP.exec();
+}
+
+void MainWindow::adresseIPGlobale(){
+    QGlobaIPDiag infoIP("L'adresse IP externe du serveur est : ",ui->centralwidget);
+
 }
 
 MainWindow::~MainWindow()

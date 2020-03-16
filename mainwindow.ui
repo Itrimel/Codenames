@@ -30,6 +30,8 @@
      <string>Menu</string>
     </property>
     <addaction name="actionNouvelle_partie"/>
+    <addaction name="actionObtenir_adresse_IP"/>
+    <addaction name="actionObtenir_adresse_IP_globale"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
@@ -37,6 +39,16 @@
   <action name="actionNouvelle_partie">
    <property name="text">
     <string>Nouvelle partie</string>
+   </property>
+  </action>
+  <action name="actionObtenir_adresse_IP">
+   <property name="text">
+    <string>Obtenir adresse IP locale</string>
+   </property>
+  </action>
+  <action name="actionObtenir_adresse_IP_globale">
+   <property name="text">
+    <string>Obtenir adresse IP externe</string>
    </property>
   </action>
  </widget>
