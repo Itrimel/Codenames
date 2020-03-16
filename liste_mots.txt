@@ -1,4 +1,4 @@
-Uniforme
+uniforme
 page
 papier
 lion
@@ -136,7 +136,8 @@ mars
 esprit
 jet
 campagne
-berlinindien
+berlin
+indien
 botte
 chaîne
 flûte
