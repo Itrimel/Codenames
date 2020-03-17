@@ -47,7 +47,6 @@ void QGlobaIPDiag::update_text(){
 }
 
 void QGlobaIPDiag::manageReply(QNetworkReply* networkReply){
-    std::cout << "hey" << std::endl;
     gotReply=true;
     update_add->stop();
     setText(texte+QJsonDocument::fromJson(networkReply->readAll()).object().value("ip").toString()+QString(":%1").arg(PORT_SERVEUR));

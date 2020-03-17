@@ -1,8 +1,6 @@
 #ifndef QGLOBAIPDIAG_H
 #define QGLOBAIPDIAG_H
 
-#define PORT_SERVEUR 8081
-
 #include <QWidget>
 #include <QTimer>
 #include <QMessageBox>
@@ -10,9 +8,7 @@
 #include <QJsonObject>
 #include <QNetworkReply>
 #include <QUrlQuery>
-#include <iostream>
-
-
+#include "widgetconnexion.h"
 
 class QGlobaIPDiag : public QMessageBox
 {

@@ -3,11 +3,17 @@
 
 #include <QLabel>
 #include <QTimer>
-#include <QDebug>
 #include <QMenuBar>
+#include <QTcpServer>
+#include <QTcpSocket>
+
+#define PORT_SERVEUR 8081
 
 enum etatCo{
     PasCo,
+    Co,
+    Dropping,
+    EchecCo
 };
 
 class WidgetConnexion : public QLabel
@@ -21,8 +27,10 @@ private:
     QTimer* clignotement_pas_co;
     bool clign=true;
     QMenuBar* menuBar;
+    QTcpServer* server;
 private slots:
     void textePasCo();
+    void nouvCo();
 };
 
 #endif // WIDGETCONNEXION_H
