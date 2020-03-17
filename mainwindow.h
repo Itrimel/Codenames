@@ -10,6 +10,7 @@
 #include <QNetworkInterface>
 #include "qcard.h"
 #include "qglobaipdiag.h"
+#include "widgetconnexion.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

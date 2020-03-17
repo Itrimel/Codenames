@@ -19,12 +19,14 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     qcard.cpp \
-    qglobaipdiag.cpp
+    qglobaipdiag.cpp \
+    widgetconnexion.cpp
 
 HEADERS += \
     mainwindow.h \
     qcard.h \
-    qglobaipdiag.h
+    qglobaipdiag.h \
+    widgetconnexion.h
 
 FORMS += \
     mainwindow.ui

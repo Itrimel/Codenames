@@ -12,8 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QLabel *label = new QLabel(parent);
-    label->setText("<font color=red>Non connecté</font>");
+    WidgetConnexion *label = new WidgetConnexion(parent,ui->menubar);
     ui->menubar->setCornerWidget(label);
 
     creerNouvellePartie();
