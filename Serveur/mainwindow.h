@@ -8,7 +8,7 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QNetworkInterface>
-#include "qcard.h"
+#include "Commun/qcard.h"
 #include "qglobaipdiag.h"
 #include "widgetconnexion.h"
 

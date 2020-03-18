@@ -6,8 +6,7 @@
 #include <QMenuBar>
 #include <QTcpServer>
 #include <QTcpSocket>
-
-#define PORT_SERVEUR 8081
+#include "serveur_internet_infos.h"
 
 enum etatCo{
     PasCo,

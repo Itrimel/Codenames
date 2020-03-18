@@ -8,7 +8,7 @@
 #include <QJsonObject>
 #include <QNetworkReply>
 #include <QUrlQuery>
-#include "widgetconnexion.h"
+#include "serveur_internet_infos.h"
 
 class QGlobaIPDiag : public QMessageBox
 {

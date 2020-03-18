@@ -16,20 +16,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    main.cpp \
-    mainwindow.cpp \
-    qcard.cpp \
-    qglobaipdiag.cpp \
-    widgetconnexion.cpp
+    Serveur/main.cpp \
+    Serveur/mainwindow.cpp \
+    Commun/qcard.cpp \
+    Serveur/qglobaipdiag.cpp \
+    Serveur/widgetconnexion.cpp
 
 HEADERS += \
-    mainwindow.h \
-    qcard.h \
-    qglobaipdiag.h \
-    widgetconnexion.h
+    Serveur/mainwindow.h \
+    Commun/qcard.h \
+    Serveur/qglobaipdiag.h \
+    Serveur/serveur_internet_infos.h \
+    Serveur/widgetconnexion.h
 
 FORMS += \
-    mainwindow.ui
+    Serveur/mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
