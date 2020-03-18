@@ -1,14 +1,14 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "mainwindowserveur.h"
+#include "ui_serveur.h"
 
 #define NB_MOTS 398
 
 extern char _binary_liste_mots_txt_start;
 extern char _binary_liste_mots_txt_end;
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindowServeur::MainWindowServeur(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::Serveur)
 {
     ui->setupUi(this);
 
@@ -17,12 +17,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     creerNouvellePartie();
 
-    connect(ui->actionNouvelle_partie,&QAction::triggered,this,&MainWindow::nouvPartie);
-    connect(ui->actionObtenir_adresse_IP,&QAction::triggered,this,&MainWindow::adresseIPLocale);
-    connect(ui->actionObtenir_adresse_IP_globale,&QAction::triggered,this,&MainWindow::adresseIPGlobale);
+    connect(ui->actionNouvelle_partie,&QAction::triggered,this,&MainWindowServeur::nouvPartie);
+    connect(ui->actionObtenir_adresse_IP,&QAction::triggered,this,&MainWindowServeur::adresseIPLocale);
+    connect(ui->actionObtenir_adresse_IP_globale,&QAction::triggered,this,&MainWindowServeur::adresseIPGlobale);
 }
 
-void MainWindow::creerNouvellePartie(){
+void MainWindowServeur::creerNouvellePartie(){
     //Génération de la liste de mots
     //Commande pour convertir le fichier .txt en .o : objcopy --input binary --output elf64-x86-64 --binary-architecture i386:x86-64 liste_mots.txt liste_mots.o
     QByteArray liste_mots_data(&_binary_liste_mots_txt_start,_binary_liste_mots_txt_end-_binary_liste_mots_txt_start);
@@ -68,19 +68,19 @@ void MainWindow::creerNouvellePartie(){
     }
 }
 
-void MainWindow::supprimerPartieEnCours(){
+void MainWindowServeur::supprimerPartieEnCours(){
     for(auto i = liste_cartes->begin(); i < liste_cartes->end(); i++){
         ui->gridLayout->removeWidget(*i);
         delete *i;
     }
 }
 
-void MainWindow::nouvPartie(){
+void MainWindowServeur::nouvPartie(){
     supprimerPartieEnCours();
     creerNouvellePartie();
 }
 
-void MainWindow::adresseIPLocale(){
+void MainWindowServeur::adresseIPLocale(){
     QMessageBox infoIP(ui->centralwidget);
     auto list_adresses = QNetworkInterface::allAddresses();
     QList<QHostAddress> list = QNetworkInterface::allAddresses();
@@ -96,12 +96,12 @@ void MainWindow::adresseIPLocale(){
     infoIP.exec();
 }
 
-void MainWindow::adresseIPGlobale(){
+void MainWindowServeur::adresseIPGlobale(){
     QGlobaIPDiag infoIP("L'adresse IP externe du serveur est : ",ui->centralwidget);
 
 }
 
-MainWindow::~MainWindow()
+MainWindowServeur::~MainWindowServeur()
 {
     delete ui;
     delete liste_cartes;

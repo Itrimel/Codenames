@@ -13,19 +13,19 @@
 #include "widgetconnexion.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui { class Serveur; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class MainWindowServeur : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    MainWindowServeur(QWidget *parent = nullptr);
+    ~MainWindowServeur();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::Serveur *ui;
     typeCarte quicestquicommence;
     typeCarte quicestquicontinue;
     void creerNouvellePartie();
