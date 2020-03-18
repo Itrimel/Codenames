@@ -1,3 +1,4 @@
 TEMPLATE = subdirs
-SUBDIRS = serveur
+SUBDIRS = serveur client
 serveur.file = Codenames-serveur.pro
+client.file = Codenames-client.pro
