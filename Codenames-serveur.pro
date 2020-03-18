@@ -23,6 +23,7 @@ SOURCES += \
     Serveur/widgetconnexion.cpp
 
 HEADERS += \
+    Commun/protocole.h \
     Commun/qcard.h \
     Serveur/mainwindowserveur.h \
     Serveur/qglobaipdiag.h \

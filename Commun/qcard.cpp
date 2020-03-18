@@ -38,6 +38,10 @@ void QCard::paintEvent(QPaintEvent* event){
     case typeCarte::Neutre :
         couleur_bord = QColor(181,132,0);
         couleur_centre = QColor(237,237,178);
+        break;
+    case typeCarte::SaisPas :
+        couleur_bord = Qt::black;
+        couleur_centre = Qt::white;
     }
 
     QPainterPath contour;
@@ -78,5 +82,16 @@ void QCard::enterEvent(QEvent* event){
 }
 void QCard::leaveEvent(QEvent* event){
     drawGuessed=isGuessed;
+    this->update();
+}
+
+void QCard::setGuess(){
+    isGuessed = true;
+    drawGuessed = !(this->underMouse());
+    this->update();
+}
+
+void QCard::setType(typeCarte type_nouv){
+    type=type_nouv;
     this->update();
 }

@@ -17,10 +17,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Client/main_client.cpp \
-    Client/mainwindowclient.cpp
+    Client/mainwindowclient.cpp \
+    Commun/qcard.cpp
 
 HEADERS += \
-    Client/mainwindowclient.h
+    Client/mainwindowclient.h \
+    Commun/protocole.h \
+    Commun/qcard.h
 
 FORMS += \
     Client/client1.ui

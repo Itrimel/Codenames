@@ -6,14 +6,7 @@
 #include <iostream>
 #include <QFontMetrics>
 #include <algorithm>
-
-enum typeCarte{
-    Rouge,
-    Bleu,
-    Noir,
-    Neutre,
-    SaisPas
-};
+#include "protocole.h"
 
 class QCard : public QWidget
 {
@@ -25,6 +18,10 @@ public:
         type(type),
         liste_cartes(liste_cartes){};
     double inline getRightFontSize() const {return rightFontSize;}
+    void setGuess();
+    QString inline getMot() {return mot;}
+    typeCarte inline getType() {return type;}
+    void setType(typeCarte);
 virtual
     bool hasHeightForWidth() const override{return true;}
     int heightForWidth(int w) const override{return (int)0.7*w;}
@@ -36,7 +33,7 @@ protected:
 
 private:
     const QString mot;
-    const typeCarte type;
+    typeCarte type;
     void findRightFontSize(QString, QRect, QFont);
     double rightFontSize = 1;
     const std::vector<QCard*>* liste_cartes;

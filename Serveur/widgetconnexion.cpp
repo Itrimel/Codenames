@@ -19,7 +19,6 @@ WidgetConnexion::WidgetConnexion(QWidget* parent,QMenuBar* menuBar):
         menuBar->setCornerWidget(this);
     }
     connect(server,&QTcpServer::newConnection,this,&WidgetConnexion::nouvCo);
-    server->setMaxPendingConnections(1);
 }
 
 void WidgetConnexion::goPasCo(){
