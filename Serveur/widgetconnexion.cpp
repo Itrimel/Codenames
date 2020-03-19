@@ -2,9 +2,10 @@
 
 
 
-WidgetConnexion::WidgetConnexion(QWidget* parent,QMenuBar* menuBar):
+WidgetConnexion::WidgetConnexion(QWidget* parent,QMenuBar* menuBar, std::vector<QCard*>* liste):
     QLabel(parent),
-    menuBar(menuBar)
+    menuBar(menuBar),
+    liste_cartes(liste)
 {
     clignotement_pas_co=new QTimer(this);
     connect(clignotement_pas_co,&QTimer::timeout,this,&WidgetConnexion::textePasCo);
@@ -52,6 +53,7 @@ void WidgetConnexion::nouvCo(){
     socket = server->nextPendingConnection();
     setText("<font color=green>Connecté</font>");
     menuBar->setCornerWidget(this);
+    connect(socket,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(gererErreur(QAbstractSocket::SocketError)));
     connect(socket,&QTcpSocket::readyRead,this,&WidgetConnexion::receptionMessage);
 }
 
@@ -72,7 +74,7 @@ void WidgetConnexion::receptionMessage(){
             break;
         case(MSG_TYPE_GET_BOARD):
             //TODO : Implémenter envoi plateau
-            sendBoard(socket);
+            sendBoard();
             break;
         case(MSG_TYPE_OK):
             //TODO : Implémenter (peut-être) OK
@@ -84,7 +86,8 @@ void WidgetConnexion::receptionMessage(){
     }
 }
 
-void WidgetConnexion::sendBoard(QTcpSocket * sock){
+//void WidgetConnexion::sendBoard(QTcpSocket * sock){
+void WidgetConnexion::sendBoard(){
     char buffer[1000]; //Ca devrait aller, il y a pas de mots de plus de 35 caractères en français
     int position=0,len;
     std::string mot;
@@ -96,11 +99,18 @@ void WidgetConnexion::sendBoard(QTcpSocket * sock){
         memcpy(buffer+position+sizeof(header),mot.data(),len+1);
         position+=len+1;
         buffer[position-1+sizeof(header)]=0;
-        buffer[position+sizeof(header)]=(char)liste_cartes->at(i)->getType();
-        buffer[position+1+sizeof(header)]=0;
-        position+=2;
+        if(liste_cartes->at(i)->getGuess()){
+            buffer[position+sizeof(header)]=(char)liste_cartes->at(i)->getType();
+        } else {
+            buffer[position+sizeof(header)]=(char)SaisPas;
+        }
+        position+=1;
     }
     header.length=position;
     memcpy(buffer,&header,sizeof(header));
-    socket->write(buffer,position);
+    socket->write(buffer,position+sizeof(header));
+}
+
+void WidgetConnexion::gererErreur(QAbstractSocket::SocketError erreur){
+    qDebug() << erreur;
 }

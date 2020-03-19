@@ -32,6 +32,7 @@
     <addaction name="actionNouvelle_partie"/>
     <addaction name="actionObtenir_adresse_IP"/>
     <addaction name="actionObtenir_adresse_IP_globale"/>
+    <addaction name="actionTest"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
@@ -49,6 +50,11 @@
   <action name="actionObtenir_adresse_IP_globale">
    <property name="text">
     <string>Obtenir adresse IP externe</string>
+   </property>
+  </action>
+  <action name="actionTest">
+   <property name="text">
+    <string>Test</string>
    </property>
   </action>
  </widget>

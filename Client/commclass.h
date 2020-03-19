@@ -23,6 +23,7 @@ public:
     void lancerCo();
     void getNewBoard();
     QVector<data_carte> plateau_courant=QVector<data_carte>(25);
+    void readMessage();
 signals:
     void coEtablie();
     void newBoard();
@@ -30,7 +31,6 @@ private:
     const QHostAddress adresse;
     const quint16 port;
     void sendMessage(char*,int);
-    void readMessage();
     bool gererNewBoard(char*, uint32_t);
 };
 

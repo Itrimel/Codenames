@@ -51,6 +51,7 @@ void CommClass::readMessage(){
             break;
         default:
             //Implement pas normal
+            qDebug() << "Message pas bon";
             break;
         }
     }
@@ -69,8 +70,8 @@ bool CommClass::gererNewBoard(char* message, uint32_t length){
         } else {
             mots[curr_mot]=curr_len;
             curr_len=0;
-            pos+=3;
-            if(pos>=length){
+            pos+=2;
+            if(pos>length){
                 return false;
             }
             if(++curr_mot==25){
@@ -80,10 +81,10 @@ bool CommClass::gererNewBoard(char* message, uint32_t length){
     }
     pos=0;
     for(curr_mot=0;curr_mot<25;curr_mot++){
-        carte_courante.carte.setRawData(QString(message+pos).data(),mots[curr_mot]);
+        carte_courante.carte = QString(message+pos);
         pos+=mots[curr_mot]+1;
         carte_courante.type = (typeCarte)(message[pos]);
-        pos+=2;
+        pos+=1;
         plateau_courant[curr_mot]=carte_courante;
     }
     return true;

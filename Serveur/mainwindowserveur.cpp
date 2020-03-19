@@ -12,14 +12,15 @@ MainWindowServeur::MainWindowServeur(QWidget *parent)
 {
     ui->setupUi(this);
 
-    WidgetConnexion *label = new WidgetConnexion(parent,ui->menubar);
-    ui->menubar->setCornerWidget(label);
-
     creerNouvellePartie();
+
+    WidgetConnexion *label = new WidgetConnexion(parent,ui->menubar,liste_cartes);
+    ui->menubar->setCornerWidget(label);
 
     connect(ui->actionNouvelle_partie,&QAction::triggered,this,&MainWindowServeur::nouvPartie);
     connect(ui->actionObtenir_adresse_IP,&QAction::triggered,this,&MainWindowServeur::adresseIPLocale);
     connect(ui->actionObtenir_adresse_IP_globale,&QAction::triggered,this,&MainWindowServeur::adresseIPGlobale);
+    connect(ui->actionTest,&QAction::triggered,label,&WidgetConnexion::sendBoard);
 }
 
 void MainWindowServeur::creerNouvellePartie(){

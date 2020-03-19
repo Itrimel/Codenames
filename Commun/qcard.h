@@ -19,6 +19,7 @@ public:
         liste_cartes(liste_cartes){};
     double inline getRightFontSize() const {return rightFontSize;}
     void setGuess();
+    bool inline getGuess() {return isGuessed;}
     QString inline getMot() {return mot;}
     typeCarte inline getType() {return type;}
     void setType(typeCarte);

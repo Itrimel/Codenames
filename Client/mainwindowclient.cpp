@@ -10,6 +10,7 @@ MainWindowClient::MainWindowClient(QWidget *parent)
     ui1->setupUi(this);
 
     connect(ui1->pushButton,&QPushButton::released,this,&MainWindowClient::connexion);
+    ui1->lineEdit->setText("127.0.0.1:8081");
 }
 
 void MainWindowClient::connexion(){
@@ -40,6 +41,7 @@ void MainWindowClient::connexion(){
 void MainWindowClient::connexionEtab(){
     ui1->lineEdit->setText("Connexion établie ! Récup plateau en cours");
     connect(communication,&CommClass::newBoard,this,&MainWindowClient::changerBoard);
+    connect(communication->socket,&QTcpSocket::readyRead,communication,&CommClass::readMessage);
     communication->getNewBoard();
 }
 
@@ -54,6 +56,7 @@ void MainWindowClient::changerBoard(){
     }
     ui2->setupUi(this);
     premier_plateau=false;
+    liste_cartes->clear();
     for(int i=0; i<25; i++){
         carte = new QCard(communication->plateau_courant[i].type,communication->plateau_courant[i].carte,liste_cartes,ui2->centralwidget);
         liste_cartes->emplace_back(carte);

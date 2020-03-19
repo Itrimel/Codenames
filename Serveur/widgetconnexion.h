@@ -19,9 +19,13 @@ enum etatCo{
 
 class WidgetConnexion : public QLabel
 {
+
+    Q_OBJECT
+
 public:
-    WidgetConnexion(QWidget*, QMenuBar*);
+    WidgetConnexion(QWidget*, QMenuBar*, std::vector<QCard*>*);
     virtual ~WidgetConnexion();
+    void sendBoard();
 private:
     etatCo etat=PasCo;
     void goPasCo();
@@ -30,12 +34,12 @@ private:
     QMenuBar* menuBar;
     QTcpServer* server;
     QTcpSocket* socket;
-    void sendBoard(QTcpSocket*);
     std::vector<QCard*>* liste_cartes;
 private slots:
     void textePasCo();
     void nouvCo();
     void receptionMessage();
+    void gererErreur(QAbstractSocket::SocketError);
 };
 
 #endif // WIDGETCONNEXION_H
