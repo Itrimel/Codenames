@@ -63,7 +63,7 @@ void MainWindowServeur::creerNouvellePartie(){
     //Construction de l'affichage
     liste_cartes->clear();
     for(int i=0; i<25; i++){
-        liste_cartes->emplace_back(new QCard(lay[i],liste_mots[pos[i]],liste_cartes,ui->centralwidget));
+        liste_cartes->emplace_back(new QCard(i,lay[i],liste_mots[pos[i]],liste_cartes,ui->centralwidget));
         ui->gridLayout->addWidget(liste_cartes->back(),i%5,i/5);
     }
 }

@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <iostream>
 #include <QFontMetrics>
+#include <QMouseEvent>
 #include <algorithm>
 #include "protocole.h"
 
@@ -12,8 +13,9 @@ class QCard : public QWidget
 {
     Q_OBJECT
 public:
-    QCard(typeCarte type, QString mot, std::vector<QCard*>* liste_cartes, QWidget *parent = nullptr):
+    QCard(int numero,typeCarte type, QString mot, std::vector<QCard*>* liste_cartes, QWidget *parent = nullptr):
         QWidget(parent),
+        num(numero),
         mot(mot),
         type(type),
         liste_cartes(liste_cartes){};
@@ -31,6 +33,7 @@ protected:
     void paintEvent(QPaintEvent *event) override;
     void enterEvent(QEvent*) override;
     void leaveEvent(QEvent*) override;
+    void mousePressEvent(QMouseEvent*) override;
 
 private:
     const QString mot;
@@ -40,9 +43,10 @@ private:
     const std::vector<QCard*>* liste_cartes;
     bool isGuessed = false;
     bool drawGuessed = false;
+    const int num;
 
 signals:
-
+    void cardClicked(int);
 };
 
 #endif // QCARD_H

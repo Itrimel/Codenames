@@ -58,7 +58,7 @@ void MainWindowClient::changerBoard(){
     premier_plateau=false;
     liste_cartes->clear();
     for(int i=0; i<25; i++){
-        carte = new QCard(communication->plateau_courant[i].type,communication->plateau_courant[i].carte,liste_cartes,ui2->centralwidget);
+        carte = new QCard(i,communication->plateau_courant[i].type,communication->plateau_courant[i].carte,liste_cartes,ui2->centralwidget);
         liste_cartes->emplace_back(carte);
         ui2->gridLayout->addWidget(carte,i%5,i/5);
         if(carte->getType()!=SaisPas){
