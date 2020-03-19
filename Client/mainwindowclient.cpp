@@ -39,11 +39,29 @@ void MainWindowClient::connexion(){
 
 void MainWindowClient::connexionEtab(){
     ui1->lineEdit->setText("Connexion établie ! Récup plateau en cours");
-    connect(communication,&CommClass::coEtablie,this,&MainWindowClient::changerBoard);
+    connect(communication,&CommClass::newBoard,this,&MainWindowClient::changerBoard);
+    communication->getNewBoard();
 }
 
+
 void MainWindowClient::changerBoard(){
-    //TODO : Implémenter
+    ui2->setupUi(this);
+    QCard* carte;
+    if(!premier_plateau){
+        for(auto i = liste_cartes->begin(); i < liste_cartes->end(); i++){
+            ui2->gridLayout->removeWidget(*i);
+            delete *i;
+        }
+    }
+    premier_plateau=false;
+    for(int i=0; i<25; i++){
+        carte = new QCard(communication->plateau_courant[i].type,communication->plateau_courant[i].carte,liste_cartes,ui2->centralwidget);
+        liste_cartes->emplace_back(carte);
+        ui2->gridLayout->addWidget(carte,i%5,i/5);
+        if(carte->getType()!=SaisPas){
+            carte->setGuess();
+        }
+    }
 }
 
 
@@ -52,5 +70,6 @@ MainWindowClient::~MainWindowClient()
     delete ui1;
     delete ui2;
     if(comm_exists) {delete communication;}
+    delete liste_cartes;
 }
 

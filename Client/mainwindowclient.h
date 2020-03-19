@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "commclass.h"
+#include "Commun/qcard.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Client1; class Client2; }
@@ -20,6 +21,8 @@ private:
     Ui::Client2 *ui2;
     CommClass* communication;
     bool comm_exists = false;
+    bool premier_plateau=true;
+    std::vector<QCard*>* liste_cartes = new std::vector<QCard*>;
 private slots:
     void connexion();
     void connexionEtab();
