@@ -90,6 +90,16 @@ bool CommClass::gererNewBoard(char* message, uint32_t length){
     return true;
 }
 
+void CommClass::sendGuess(int nb){
+    message_header header;
+    header.type = MSG_TYPE_GUESS;
+    header.length = 1;
+    char* buffer = new char[sizeof(header)+1];
+    memcpy(buffer,&header,sizeof(header));
+    buffer[sizeof(header)]=nb;
+    sendMessage(buffer,sizeof(header)+1);
+}
+
 CommClass::~CommClass(){
     socket->deleteLater();
 }

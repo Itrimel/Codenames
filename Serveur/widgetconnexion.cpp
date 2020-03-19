@@ -68,6 +68,7 @@ void WidgetConnexion::receptionMessage(){
             break;
         case(MSG_TYPE_GUESS):
             //TODO: Implémenter réception guess
+            qDebug() << (int)buffer[0];
             break;
         case(MSG_TYPE_PING):
             //TODO : Implémenter ping

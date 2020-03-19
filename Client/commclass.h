@@ -27,6 +27,9 @@ public:
 signals:
     void coEtablie();
     void newBoard();
+public slots:
+    void sendGuess(int);
+
 private:
     const QHostAddress adresse;
     const quint16 port;

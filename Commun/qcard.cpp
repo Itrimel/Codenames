@@ -97,7 +97,7 @@ void QCard::setType(typeCarte type_nouv){
 }
 
 void QCard::mousePressEvent(QMouseEvent * event){
-    if(event->button()==Qt::RightButton){
+    if(event->button()==Qt::LeftButton){
         event->accept();
         if(!isGuessed){emit cardClicked(num);}
     }

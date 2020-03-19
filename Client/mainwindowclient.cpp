@@ -64,6 +64,7 @@ void MainWindowClient::changerBoard(){
         if(carte->getType()!=SaisPas){
             carte->setGuess();
         }
+        connect(carte,&QCard::cardClicked,communication,&CommClass::sendGuess);
     }
 }
 
