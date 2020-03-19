@@ -27,7 +27,6 @@ void CommClass::sendMessage(char * message, int len){
 }
 
 void CommClass::readMessage(){
-    //TODO : Implémenter. readyRead() et bytesAvailable()
     message_header header;
     while(socket->bytesAvailable()){
         socket->read(reinterpret_cast<char*>(&header), sizeof(message_header));
