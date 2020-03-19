@@ -45,7 +45,6 @@ void MainWindowClient::connexionEtab(){
 
 
 void MainWindowClient::changerBoard(){
-    ui2->setupUi(this);
     QCard* carte;
     if(!premier_plateau){
         for(auto i = liste_cartes->begin(); i < liste_cartes->end(); i++){
@@ -53,6 +52,7 @@ void MainWindowClient::changerBoard(){
             delete *i;
         }
     }
+    ui2->setupUi(this);
     premier_plateau=false;
     for(int i=0; i<25; i++){
         carte = new QCard(communication->plateau_courant[i].type,communication->plateau_courant[i].carte,liste_cartes,ui2->centralwidget);
