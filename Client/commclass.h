@@ -4,7 +4,13 @@
 #include <QHostAddress>
 #include <QTcpSocket>
 #include <QObject>
+#include <QVector>
 #include "Commun/protocole.h"
+
+struct data_carte{
+    QString carte;
+    typeCarte type;
+};
 
 class CommClass : public QObject
 {
@@ -16,6 +22,7 @@ public:
     QTcpSocket* socket;
     void lancerCo();
     void getNewBoard();
+    QVector<data_carte> plateau_courant=QVector<data_carte>(25);
 signals:
     void coEtablie();
     void newBoard();
@@ -24,6 +31,7 @@ private:
     const quint16 port;
     void sendMessage(char*,int);
     void readMessage();
+    bool gererNewBoard(char*, uint32_t);
 };
 
 #endif // COMMCLASS_H
