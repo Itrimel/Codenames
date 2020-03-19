@@ -25,7 +25,7 @@ class WidgetConnexion : public QLabel
 public:
     WidgetConnexion(QWidget*, QMenuBar*, std::vector<QCard*>*);
     virtual ~WidgetConnexion();
-    void sendBoard();
+    void resendBoard();
 private:
     etatCo etat=PasCo;
     void goPasCo();
@@ -35,6 +35,7 @@ private:
     QTcpServer* server;
     QTcpSocket* socket;
     std::vector<QCard*>* liste_cartes;
+    void sendBoard(QTcpSocket*);
 private slots:
     void textePasCo();
     void nouvCo();

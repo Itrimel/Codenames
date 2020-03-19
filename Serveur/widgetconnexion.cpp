@@ -74,7 +74,7 @@ void WidgetConnexion::receptionMessage(){
             break;
         case(MSG_TYPE_GET_BOARD):
             //TODO : Implémenter envoi plateau
-            sendBoard();
+            sendBoard(socket);
             break;
         case(MSG_TYPE_OK):
             //TODO : Implémenter (peut-être) OK
@@ -86,8 +86,7 @@ void WidgetConnexion::receptionMessage(){
     }
 }
 
-//void WidgetConnexion::sendBoard(QTcpSocket * sock){
-void WidgetConnexion::sendBoard(){
+void WidgetConnexion::sendBoard(QTcpSocket * sock){
     char buffer[1000]; //Ca devrait aller, il y a pas de mots de plus de 35 caractères en français
     int position=0,len;
     std::string mot;
@@ -108,7 +107,13 @@ void WidgetConnexion::sendBoard(){
     }
     header.length=position;
     memcpy(buffer,&header,sizeof(header));
-    socket->write(buffer,position+sizeof(header));
+    sock->write(buffer,position+sizeof(header));
+}
+
+void WidgetConnexion::resendBoard(){
+    if(etat==Co){
+        sendBoard(socket);
+    }
 }
 
 void WidgetConnexion::gererErreur(QAbstractSocket::SocketError erreur){

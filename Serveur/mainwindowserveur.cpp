@@ -20,7 +20,6 @@ MainWindowServeur::MainWindowServeur(QWidget *parent)
     connect(ui->actionNouvelle_partie,&QAction::triggered,this,&MainWindowServeur::nouvPartie);
     connect(ui->actionObtenir_adresse_IP,&QAction::triggered,this,&MainWindowServeur::adresseIPLocale);
     connect(ui->actionObtenir_adresse_IP_globale,&QAction::triggered,this,&MainWindowServeur::adresseIPGlobale);
-    connect(ui->actionTest,&QAction::triggered,label,&WidgetConnexion::sendBoard);
 }
 
 void MainWindowServeur::creerNouvellePartie(){
@@ -79,6 +78,7 @@ void MainWindowServeur::supprimerPartieEnCours(){
 void MainWindowServeur::nouvPartie(){
     supprimerPartieEnCours();
     creerNouvellePartie();
+    reinterpret_cast<WidgetConnexion*>(ui->menubar->cornerWidget())->resendBoard();
 }
 
 void MainWindowServeur::adresseIPLocale(){
