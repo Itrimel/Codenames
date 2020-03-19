@@ -81,7 +81,7 @@ bool CommClass::gererNewBoard(char* message, uint32_t length){
     }
     pos=0;
     for(curr_mot=0;curr_mot<25;curr_mot++){
-        carte_courante.carte = QString(message+pos);
+        carte_courante.carte.setRawData(QString(message+pos).data(),mots[curr_mot]);
         pos+=mots[curr_mot]+1;
         carte_courante.type = (typeCarte)(message[pos]);
         pos+=2;
