@@ -1,18 +1,35 @@
 #include "socketcommun.h"
 
 SocketCommun::SocketCommun(QHostAddress adresse, quint16 port, QObject* parent = nullptr):
-    QTcpSocket(parent),
+    QObject(parent),
     adresse(adresse),
     port(port)
-{}
+{
+    socket = new QTcpSocket(parent);
+    connect(socket,qOverload<QAbstractSocket::SocketError>(&QTcpSocket::error),this,&SocketCommun::gererErreur);
+}
+
+SocketCommun::SocketCommun(QTcpSocket* sock):
+    adresse(sock->peerAddress()),
+    port(sock->peerPort())
+{
+    socket = sock;
+    if(socket->state()!=QAbstractSocket::ConnectedState){
+        qDebug() << "Constructeur non valable";
+        //TODO :Faire un raise error ici
+    } else {
+        coEtablie();
+    }
+}
 
 void SocketCommun::lancerCo(){
-    connectToHost(adresse.toString(),port);
-    connect(this,&SocketCommun::connected,this,&SocketCommun::coEtablie);
+    socket->connectToHost(adresse.toString(),port);
+    connect(socket,&QTcpSocket::connected,this,&SocketCommun::coEtablie);
 }
 
 void SocketCommun::coEtablie(){
-    connect(this,&SocketCommun::readyRead,this,&SocketCommun::readMessage,Qt::UniqueConnection);
+    connect(socket,&QTcpSocket::readyRead,this,&SocketCommun::readMessage);
+    emit coPrete();
 }
 
 void SocketCommun::getNewBoard(){
@@ -22,17 +39,23 @@ void SocketCommun::getNewBoard(){
     char buffer[sizeof(header)+1];
     memcpy(buffer,reinterpret_cast<char*>(&header),sizeof(header));
     buffer[sizeof(header)] = 0; //Message non vide, histoire d'écrire qqchose
-    write(buffer,sizeof(header)+1);
+    socket->write(buffer,sizeof(header)+1);
 }
 
 void SocketCommun::readMessage(){
     message_header header;
-    while(bytesAvailable()){
-        read(reinterpret_cast<char*>(&header), sizeof(message_header));
+    while(socket->bytesAvailable()){
+        socket->read(reinterpret_cast<char*>(&header), sizeof(message_header));
         char buffer[header.length];
-        read(buffer,header.length);
+        socket->read(buffer,header.length);
         switch(header.type){
         case(MSG_TYPE_NOP):
+            break;
+        case(MSG_TYPE_GUESS):
+            if(header.length!=1){
+                qDebug() << "Pas bonne longueur : guess";
+            }
+            emit guessRecu(this,buffer[0]);
             break;
         case(MSG_TYPE_BOARD):
             if(gererNewBoard(buffer, header.length)){
@@ -48,8 +71,8 @@ void SocketCommun::readMessage(){
             }
             emit carteUpdate(buffer[0],(typeCarte)buffer[1]);
             break;
-        case(MSG_TYPE_PING):
-            //Implement
+        case(MSG_TYPE_GET_BOARD):
+            emit askForBoard(this);
             break;
         default:
             //Implement pas normal
@@ -92,6 +115,37 @@ bool SocketCommun::gererNewBoard(char* message, uint32_t length){
     return true;
 }
 
+void SocketCommun::sendBoard(std::vector<data_carte>* liste_cartes){
+    char buffer[1000]; //Ca devrait aller, il y a pas de mots de plus de 35 caractères en français
+    int position=0,len;
+    std::string mot;
+    message_header header;
+    header.type=MSG_TYPE_BOARD;
+    for(int i=0; i<25; i++){
+        mot = liste_cartes->at(i).carte.toStdString();
+        len = mot.length();
+        memcpy(buffer+position+sizeof(header),mot.data(),len+1);
+        position+=len+1;
+        buffer[position-1+sizeof(header)]=0;
+        buffer[position+sizeof(header)]=(char)liste_cartes->at(i).type;
+        position+=1;
+    }
+    header.length=position;
+    memcpy(buffer,&header,sizeof(header));
+    socket->write(buffer,position+sizeof(header));
+}
+
+void SocketCommun::sendUpdate(char nb,typeCarte type){
+    message_header header;
+    char buffer[sizeof(header)+2];
+    header.type = MSG_TYPE_UPDATE;
+    header.length = 2;
+    memcpy(buffer,&header,sizeof(header));
+    buffer[sizeof(header)]=nb;
+    buffer[sizeof(header)+1]=type;
+    socket->write(buffer,sizeof(header)+2);
+}
+
 void SocketCommun::sendGuess(int nb){
     message_header header;
     header.type = MSG_TYPE_GUESS;
@@ -99,5 +153,9 @@ void SocketCommun::sendGuess(int nb){
     char buffer[sizeof(header)+1];
     memcpy(buffer,&header,sizeof(header));
     buffer[sizeof(header)]=nb;
-    write(buffer,sizeof(header)+1);
+    socket->write(buffer,sizeof(header)+1);
+}
+
+void SocketCommun::gererErreur(QAbstractSocket::SocketError err){
+    emit erreur(this,err);
 }

@@ -33,7 +33,7 @@ void MainWindowClient::connexion(){
 
     communication = new SocketCommun(address,port,this);
     comm_exists=true;
-    connect(communication,&QTcpSocket::connected,this,&MainWindowClient::connexionEtab);
+    connect(communication,&SocketCommun::coPrete,this,&MainWindowClient::connexionEtab);
     communication->lancerCo();
     ui1->lineEdit->setText("Connexion en cours");
 }

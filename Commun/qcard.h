@@ -15,10 +15,10 @@ class QCard : public QWidget
 public:
     QCard(int numero,typeCarte type, QString mot, std::vector<QCard*>* liste_cartes, QWidget *parent = nullptr):
         QWidget(parent),
-        num(numero),
         mot(mot),
         type(type),
-        liste_cartes(liste_cartes){};
+        liste_cartes(liste_cartes),
+        num(numero) {};
     double inline getRightFontSize() const {return rightFontSize;}
     void setGuess();
     bool inline getGuess() {return isGuessed;}

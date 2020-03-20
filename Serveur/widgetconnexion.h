@@ -9,6 +9,7 @@
 #include "serveur_internet_infos.h"
 #include "Commun/protocole.h"
 #include "Commun/qcard.h"
+#include "Commun/socketcommun.h"
 
 enum etatCo{
     PasCo,
@@ -33,15 +34,14 @@ private:
     bool clign=true;
     QMenuBar* menuBar;
     QTcpServer* server;
-    QTcpSocket* socket;
+    std::vector<SocketCommun*> connections;
     std::vector<QCard*>* liste_cartes;
-    void sendBoard(QTcpSocket*);
 private slots:
     void textePasCo();
     void nouvCo();
-    void receptionMessage();
-    void gererErreur(QAbstractSocket::SocketError);
-    void sendUpdate(char);
+    void gererErreur(SocketCommun*,QAbstractSocket::SocketError);
+    void sendBoard(SocketCommun*);
+    void gererGuess(SocketCommun*, char);
 };
 
 #endif // WIDGETCONNEXION_H

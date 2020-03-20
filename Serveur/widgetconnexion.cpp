@@ -43,6 +43,9 @@ WidgetConnexion::~WidgetConnexion(){
     }
     clignotement_pas_co->deleteLater();
     server->deleteLater();
+    for(auto i = connections.begin();i<connections.end();i++){
+        delete *i;
+    }
 }
 
 void WidgetConnexion::nouvCo(){
@@ -50,91 +53,46 @@ void WidgetConnexion::nouvCo(){
         clignotement_pas_co->stop();
     }
     etat=Co;
-    socket = server->nextPendingConnection();
+    SocketCommun* new_socket = new SocketCommun(server->nextPendingConnection());
+    connections.emplace_back(new_socket);
     setText("<font color=green>Connecté</font>");
     menuBar->setCornerWidget(this);
-    connect(socket,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(gererErreur(QAbstractSocket::SocketError)));
-    connect(socket,&QTcpSocket::readyRead,this,&WidgetConnexion::receptionMessage);
+    connect(new_socket,&SocketCommun::erreur,this,&WidgetConnexion::gererErreur);
+    connect(new_socket,&SocketCommun::guessRecu,this,&WidgetConnexion::gererGuess);
+    connect(new_socket,&SocketCommun::askForBoard,this,&WidgetConnexion::sendBoard);
 }
 
-void WidgetConnexion::receptionMessage(){
-    message_header header;
-    char nb;
-    while(socket->bytesAvailable()){
-        socket->read(reinterpret_cast<char*>(&header), sizeof(message_header));
-        char buffer[header.length];
-        socket->read(buffer,header.length);
-        switch(header.type){
-        case(MSG_TYPE_NOP):
-            break;
-        case(MSG_TYPE_GUESS):
-            nb = buffer[0];
-            liste_cartes->at(nb)->setGuess();
-            sendUpdate(nb);
-            break;
-        case(MSG_TYPE_PING):
-            //TODO : Implémenter ping
-            break;
-        case(MSG_TYPE_GET_BOARD):
-            //TODO : Implémenter envoi plateau
-            sendBoard(socket);
-            break;
-        case(MSG_TYPE_OK):
-            //TODO : Implémenter (peut-être) OK
-            break;
-        default:
-            //Implement pas normal
-            break;
-        }
-    }
-}
-
-void WidgetConnexion::sendBoard(QTcpSocket * sock){
-    char buffer[1000]; //Ca devrait aller, il y a pas de mots de plus de 35 caractères en français
-    int position=0,len;
-    std::string mot;
-    message_header header;
-    header.type=MSG_TYPE_BOARD;
+void WidgetConnexion::sendBoard(SocketCommun* sock){
+    std::vector<data_carte>* plateau = new std::vector<data_carte>(25);
+    bool isGuessed;
     for(int i=0; i<25; i++){
-        mot = liste_cartes->at(i)->getMot().toStdString();
-        len = mot.length();
-        memcpy(buffer+position+sizeof(header),mot.data(),len+1);
-        position+=len+1;
-        buffer[position-1+sizeof(header)]=0;
+        isGuessed = liste_cartes->at(i)->getType();
+        plateau->at(i).carte = liste_cartes->at(i)->getMot();
         if(liste_cartes->at(i)->getGuess()){
-            buffer[position+sizeof(header)]=(char)liste_cartes->at(i)->getType();
+            plateau->at(i).type = liste_cartes->at(i)->getType();
         } else {
-            buffer[position+sizeof(header)]=(char)SaisPas;
+            plateau->at(i).type = SaisPas;
         }
-        position+=1;
     }
-    header.length=position;
-    memcpy(buffer,&header,sizeof(header));
-    sock->write(buffer,position+sizeof(header));
+    sock->sendBoard(plateau);
+    delete plateau;
 }
 
-void WidgetConnexion::sendUpdate(char nb){
-    typeCarte type;
-    message_header header;
-    char* buffer = new char[sizeof(header)+2];
-    if(etat==Co){
-        type=liste_cartes->at(nb)->getType();
-        header.type = MSG_TYPE_UPDATE;
-        header.length = 2;
-        memcpy(buffer,&header,sizeof(header));
-        buffer[sizeof(header)]=nb;
-        buffer[sizeof(header)+1]=type;
-        socket->write(buffer,sizeof(header)+2);
+void WidgetConnexion::gererGuess(SocketCommun* origine, char nb){
+    liste_cartes->at(nb)->setGuess();
+    for(auto i = connections.begin(); i<connections.end(); i++){
+        (*i)->sendUpdate(nb,liste_cartes->at(nb)->getType());
     }
-    delete[] buffer;
 }
 
 void WidgetConnexion::resendBoard(){
     if(etat==Co){
-        sendBoard(socket);
+        for(auto i = connections.begin(); i<connections.end(); i++){
+            sendBoard(*i);
+        }
     }
 }
 
-void WidgetConnexion::gererErreur(QAbstractSocket::SocketError erreur){
+void WidgetConnexion::gererErreur(SocketCommun* origine,QAbstractSocket::SocketError erreur){
     qDebug() << erreur;
 }
