@@ -6,7 +6,6 @@ SocketCommun::SocketCommun(QHostAddress adresse, quint16 port, QObject* parent =
     port(port)
 {
     socket = new QTcpSocket(parent);
-    connect(socket,qOverload<QAbstractSocket::SocketError>(&QTcpSocket::error),this,&SocketCommun::gererErreur);
 }
 
 SocketCommun::SocketCommun(QTcpSocket* sock):
@@ -29,6 +28,7 @@ void SocketCommun::lancerCo(){
 
 void SocketCommun::coEtablie(){
     connect(socket,&QTcpSocket::readyRead,this,&SocketCommun::readMessage);
+    connect(socket,qOverload<QAbstractSocket::SocketError>(&QTcpSocket::error),this,&SocketCommun::gererErreur);
     emit coPrete();
 }
 

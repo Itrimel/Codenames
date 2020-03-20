@@ -24,6 +24,7 @@ WidgetConnexion::WidgetConnexion(QWidget* parent,QMenuBar* menuBar, std::vector<
 
 void WidgetConnexion::goPasCo(){
     etat=PasCo;
+    setText("<font color=red>Pas de connexion</font>");
     clignotement_pas_co->start(600);
 }
 
@@ -55,7 +56,7 @@ void WidgetConnexion::nouvCo(){
     etat=Co;
     SocketCommun* new_socket = new SocketCommun(server->nextPendingConnection());
     connections.emplace_back(new_socket);
-    setText("<font color=green>Connecté</font>");
+    setText(QString("<font color=green>Connecté : %1</font>").arg(connections.size()));
     menuBar->setCornerWidget(this);
     connect(new_socket,&SocketCommun::erreur,this,&WidgetConnexion::gererErreur);
     connect(new_socket,&SocketCommun::guessRecu,this,&WidgetConnexion::gererGuess);
@@ -64,9 +65,7 @@ void WidgetConnexion::nouvCo(){
 
 void WidgetConnexion::sendBoard(SocketCommun* sock){
     std::vector<data_carte>* plateau = new std::vector<data_carte>(25);
-    bool isGuessed;
     for(int i=0; i<25; i++){
-        isGuessed = liste_cartes->at(i)->getType();
         plateau->at(i).carte = liste_cartes->at(i)->getMot();
         if(liste_cartes->at(i)->getGuess()){
             plateau->at(i).type = liste_cartes->at(i)->getType();
@@ -93,6 +92,22 @@ void WidgetConnexion::resendBoard(){
     }
 }
 
-void WidgetConnexion::gererErreur(SocketCommun* origine,QAbstractSocket::SocketError erreur){
+void WidgetConnexion::gererErreur(SocketCommun* origine, QAbstractSocket::SocketError erreur){
     qDebug() << erreur;
+    //Gestion simple : on droppe sans réflechir
+    auto iterator = std::find(connections.begin(),connections.end(),origine);
+    if(iterator==connections.end()){
+        //ça ne devrait pas arriver
+        //TODO : raise erreur ?
+        qDebug() << "Pb : connection pas dans la liste";
+    } else {
+        connections.erase(iterator);
+    }
+    origine->deleteLater();
+    if(connections.size()==0){
+        goPasCo();
+    } else {
+        setText(QString("<font color=green>Connecté : %1</font>").arg(connections.size()));
+        menuBar->setCornerWidget(this);
+    }
 }
