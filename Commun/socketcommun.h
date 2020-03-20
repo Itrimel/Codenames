@@ -24,6 +24,9 @@ public:
     void sendBoard(std::vector<data_carte>*);
     void sendUpdate(char,typeCarte);
     void sendPing();
+    QHostAddress inline getAddr() {return adresse;}
+    quint16 inline getPrt() {return port;}
+    QAbstractSocket::SocketState inline stateSocket() {return socket->state();}
 signals:
     void newBoard();
     void carteUpdate(char,typeCarte);
@@ -31,6 +34,7 @@ signals:
     void askForBoard(SocketCommun*);
     void coPrete();
     void erreur(SocketCommun*,QAbstractSocket::SocketError);
+    void erreurCo(SocketCommun*,QAbstractSocket::SocketError);
 public slots:
     void sendGuess(int);
 private:
@@ -41,6 +45,7 @@ private:
 private slots:
     void coEtablie();
     void gererErreur(QAbstractSocket::SocketError);
+    void gererErreurCo(QAbstractSocket::SocketError);
 };
 
 #endif // SOCKETCOMMUN_H

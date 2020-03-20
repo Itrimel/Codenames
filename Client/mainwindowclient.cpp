@@ -14,6 +14,9 @@ MainWindowClient::MainWindowClient(QWidget *parent)
 }
 
 void MainWindowClient::connexion(){
+    if(comm_exists){
+        communication->deleteLater();
+    }
     auto splitting = ui1->lineEdit->text().split(":");
     if(splitting.length()!=2){
         ui1->lineEdit->setText("Format invalide, doit être adresse:port");
@@ -39,8 +42,12 @@ void MainWindowClient::connexion(){
 }
 
 void MainWindowClient::connexionEtab(){
-    ui1->lineEdit->setText("Connexion établie ! Récup plateau en cours");
+    num_reco=0;
+    if(ui1_exists) {ui1->lineEdit->setText("Connexion établie ! Récup plateau en cours");}
+    addr = communication->getAddr();
+    prt = communication->getPrt();
     connect(communication,&SocketCommun::newBoard,this,&MainWindowClient::changerBoard);
+    connect(communication,&SocketCommun::erreur,this,&MainWindowClient::erreur);
     communication->getNewBoard();
 }
 
@@ -54,6 +61,9 @@ void MainWindowClient::changerBoard(){
         }
     }
     ui2->setupUi(this);
+    ui1_exists=false;
+    label_co->setText("<font color=green>Connecté</font>");
+    ui2->menubar->setCornerWidget(label_co);
     premier_plateau=false;
     liste_cartes->clear();
     for(int i=0; i<25; i++){
@@ -73,6 +83,24 @@ void MainWindowClient::guessCarte(char nb, typeCarte type){
     liste_cartes->at(nb)->setGuess();
 }
 
+void MainWindowClient::erreur(SocketCommun* comm, QAbstractSocket::SocketError err){
+    qDebug() << "Erreur connexion : " << err;
+    num_reco++;
+    communication->deleteLater();
+    communication = new SocketCommun(addr,prt,parent());
+    label_co->setText(QString("<font color=red>Déconnecté, tentative de reconnexion %1</font>").arg(num_reco));
+    ui2->menubar->setCornerWidget(label_co);
+    connect(communication,&SocketCommun::coPrete,this,&MainWindowClient::connexionEtab);
+    communication->lancerCo();
+    reco_socket=communication;
+    QTimer::singleShot(10*1000,this,&MainWindowClient::reconnexion);
+}
+
+void MainWindowClient::reconnexion(){
+    if(communication->stateSocket()!=QAbstractSocket::ConnectedState && communication==reco_socket){
+        erreur(communication,QAbstractSocket::UnknownSocketError);
+    }
+}
 
 MainWindowClient::~MainWindowClient()
 {

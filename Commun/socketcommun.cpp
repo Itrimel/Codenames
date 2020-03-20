@@ -6,6 +6,7 @@ SocketCommun::SocketCommun(QHostAddress adresse, quint16 port, QObject* parent =
     port(port)
 {
     socket = new QTcpSocket(parent);
+    connect(socket,qOverload<QAbstractSocket::SocketError>(&QTcpSocket::error),this,&SocketCommun::gererErreurCo);
 }
 
 SocketCommun::SocketCommun(QTcpSocket* sock):
@@ -28,6 +29,7 @@ void SocketCommun::lancerCo(){
 
 void SocketCommun::coEtablie(){
     connect(socket,&QTcpSocket::readyRead,this,&SocketCommun::readMessage);
+    disconnect(socket,qOverload<QAbstractSocket::SocketError>(&QTcpSocket::error),this,&SocketCommun::gererErreurCo);
     connect(socket,qOverload<QAbstractSocket::SocketError>(&QTcpSocket::error),this,&SocketCommun::gererErreur);
     emit coPrete();
 }
@@ -158,4 +160,8 @@ void SocketCommun::sendGuess(int nb){
 
 void SocketCommun::gererErreur(QAbstractSocket::SocketError err){
     emit erreur(this,err);
+}
+
+void SocketCommun::gererErreurCo(QAbstractSocket::SocketError err){
+    emit erreurCo(this,err);
 }
