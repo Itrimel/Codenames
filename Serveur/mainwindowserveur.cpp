@@ -12,6 +12,11 @@ MainWindowServeur::MainWindowServeur(QWidget *parent)
 {
     ui->setupUi(this);
 
+    label_qui_commence = new QLabel(parent);
+    ui->gridLayout->addWidget(label_qui_commence,0,0,1,5,Qt::AlignCenter);
+    ui->gridLayout->setRowStretch(0,1);
+    for(int i=1;i<6;ui->gridLayout->setRowStretch(i++,4));
+
     creerNouvellePartie();
 
     WidgetConnexion *label = new WidgetConnexion(parent,ui->menubar,liste_cartes);
@@ -41,6 +46,11 @@ void MainWindowServeur::creerNouvellePartie(){
     //Qui c'est qui commence
     quicestquicommence = generator->bounded(2) ? Rouge : Bleu ;
     quicestquicontinue = quicestquicommence==Rouge ? Bleu : Rouge;
+    if(quicestquicommence==Rouge){
+        label_qui_commence->setText("<font color=red>Les rouges commencent</font>");
+    } else {
+        label_qui_commence->setText("<font color=green>Les verts commencent</font>");
+    }
 
     //Choix des mots
     for(int i = 0; i<25; i++){
@@ -64,7 +74,7 @@ void MainWindowServeur::creerNouvellePartie(){
     liste_cartes->clear();
     for(int i=0; i<25; i++){
         liste_cartes->emplace_back(new QCard(i,lay[i],liste_mots[pos[i]],liste_cartes,ui->centralwidget));
-        ui->gridLayout->addWidget(liste_cartes->back(),i%5,i/5);
+        ui->gridLayout->addWidget(liste_cartes->back(),(i%5)+1,i/5);
     }
 }
 
@@ -106,5 +116,6 @@ MainWindowServeur::~MainWindowServeur()
 {
     delete ui;
     delete liste_cartes;
+    delete label_qui_commence;
 }
 

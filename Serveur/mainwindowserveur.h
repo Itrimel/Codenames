@@ -31,6 +31,7 @@ private:
     void creerNouvellePartie();
     void supprimerPartieEnCours();
     std::vector<QCard*>* liste_cartes = new std::vector<QCard*>;
+    QLabel* label_qui_commence;
 private slots:
     void nouvPartie();
     void adresseIPLocale();
