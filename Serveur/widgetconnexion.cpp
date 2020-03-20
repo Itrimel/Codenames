@@ -59,6 +59,7 @@ void WidgetConnexion::nouvCo(){
 
 void WidgetConnexion::receptionMessage(){
     message_header header;
+    char nb;
     while(socket->bytesAvailable()){
         socket->read(reinterpret_cast<char*>(&header), sizeof(message_header));
         char buffer[header.length];
@@ -67,8 +68,9 @@ void WidgetConnexion::receptionMessage(){
         case(MSG_TYPE_NOP):
             break;
         case(MSG_TYPE_GUESS):
-            //TODO: Implémenter réception guess
-            qDebug() << (int)buffer[0];
+            nb = buffer[0];
+            liste_cartes->at(nb)->setGuess();
+            sendUpdate(nb);
             break;
         case(MSG_TYPE_PING):
             //TODO : Implémenter ping
@@ -109,6 +111,22 @@ void WidgetConnexion::sendBoard(QTcpSocket * sock){
     header.length=position;
     memcpy(buffer,&header,sizeof(header));
     sock->write(buffer,position+sizeof(header));
+}
+
+void WidgetConnexion::sendUpdate(char nb){
+    typeCarte type;
+    message_header header;
+    char* buffer = new char[sizeof(header)+2];
+    if(etat==Co){
+        type=liste_cartes->at(nb)->getType();
+        header.type = MSG_TYPE_UPDATE;
+        header.length = 2;
+        memcpy(buffer,&header,sizeof(header));
+        buffer[sizeof(header)]=nb;
+        buffer[sizeof(header)+1]=type;
+        socket->write(buffer,sizeof(header)+2);
+    }
+    delete[] buffer;
 }
 
 void WidgetConnexion::resendBoard(){

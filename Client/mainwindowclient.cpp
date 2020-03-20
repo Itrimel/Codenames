@@ -66,6 +66,12 @@ void MainWindowClient::changerBoard(){
         }
         connect(carte,&QCard::cardClicked,communication,&CommClass::sendGuess);
     }
+    connect(communication,&CommClass::carteUpdate,this,&MainWindowClient::guessCarte,Qt::UniqueConnection);
+}
+
+void MainWindowClient::guessCarte(char nb, typeCarte type){
+    liste_cartes->at(nb)->setType(type);
+    liste_cartes->at(nb)->setGuess();
 }
 
 

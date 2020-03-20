@@ -27,6 +27,7 @@ public:
 signals:
     void coEtablie();
     void newBoard();
+    void carteUpdate(char,typeCarte);
 public slots:
     void sendGuess(int);
 

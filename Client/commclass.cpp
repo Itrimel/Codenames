@@ -44,7 +44,10 @@ void CommClass::readMessage(){
             }
             break;
         case(MSG_TYPE_UPDATE):
-            //Implement
+            if(header.length!=2){
+                qDebug() << "Mauvaise taille de message : update";
+            }
+            emit carteUpdate(buffer[0],(typeCarte)buffer[1]);
             break;
         case(MSG_TYPE_PING):
             //Implement
@@ -98,6 +101,7 @@ void CommClass::sendGuess(int nb){
     memcpy(buffer,&header,sizeof(header));
     buffer[sizeof(header)]=nb;
     sendMessage(buffer,sizeof(header)+1);
+    delete [] buffer;
 }
 
 CommClass::~CommClass(){

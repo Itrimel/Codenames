@@ -27,5 +27,6 @@ private slots:
     void connexion();
     void connexionEtab();
     void changerBoard();
+    void guessCarte(char,typeCarte);
 };
 #endif // MAINWINDOW_H

@@ -41,6 +41,7 @@ private slots:
     void nouvCo();
     void receptionMessage();
     void gererErreur(QAbstractSocket::SocketError);
+    void sendUpdate(char);
 };
 
 #endif // WIDGETCONNEXION_H
