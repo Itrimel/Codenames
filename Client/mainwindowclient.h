@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "commclass.h"
+#include "Commun/socketcommun.h"
 #include "Commun/qcard.h"
 
 QT_BEGIN_NAMESPACE
@@ -19,7 +19,7 @@ public:
 private:
     Ui::Client1 *ui1;
     Ui::Client2 *ui2;
-    CommClass* communication;
+    SocketCommun* communication;
     bool comm_exists = false;
     bool premier_plateau=true;
     std::vector<QCard*>* liste_cartes = new std::vector<QCard*>;

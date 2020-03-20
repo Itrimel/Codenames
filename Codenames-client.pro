@@ -16,16 +16,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Client/commclass.cpp \
     Client/main_client.cpp \
     Client/mainwindowclient.cpp \
-    Commun/qcard.cpp
+    Commun/qcard.cpp \
+    Commun/socketcommun.cpp
 
 HEADERS += \
-    Client/commclass.h \
     Client/mainwindowclient.h \
     Commun/protocole.h \
-    Commun/qcard.h
+    Commun/qcard.h \
+    Commun/socketcommun.h
 
 FORMS += \
     Client/client1.ui \

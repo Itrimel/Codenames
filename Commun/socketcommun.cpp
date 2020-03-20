@@ -1,37 +1,36 @@
-#include "commclass.h"
+#include "socketcommun.h"
 
-CommClass::CommClass(QHostAddress adresse, quint16 port, QObject* parent = nullptr):
+SocketCommun::SocketCommun(QHostAddress adresse, quint16 port, QObject* parent = nullptr):
+    QTcpSocket(parent),
     adresse(adresse),
     port(port)
-{
-    socket = new QTcpSocket(parent);
+{}
+
+void SocketCommun::lancerCo(){
+    connectToHost(adresse.toString(),port);
+    connect(this,&SocketCommun::connected,this,&SocketCommun::coEtablie);
 }
 
-void CommClass::lancerCo(){
-    socket->connectToHost(adresse.toString(),port);
+void SocketCommun::coEtablie(){
+    connect(this,&SocketCommun::readyRead,this,&SocketCommun::readMessage,Qt::UniqueConnection);
 }
 
-void CommClass::getNewBoard(){
+void SocketCommun::getNewBoard(){
     message_header header;
     header.type = MSG_TYPE_GET_BOARD;
     header.length = 1;
-    char* buffer = new char[sizeof(header)+1];
+    char buffer[sizeof(header)+1];
     memcpy(buffer,reinterpret_cast<char*>(&header),sizeof(header));
-    buffer[sizeof(header)] = 0; //Message non vide
-    sendMessage(buffer,sizeof(header)+1);
-    delete[] buffer;
+    buffer[sizeof(header)] = 0; //Message non vide, histoire d'écrire qqchose
+    write(buffer,sizeof(header)+1);
 }
 
-void CommClass::sendMessage(char * message, int len){
-    socket->write(message, len);
-}
-
-void CommClass::readMessage(){
+void SocketCommun::readMessage(){
     message_header header;
-    while(socket->bytesAvailable()){
-        socket->read(reinterpret_cast<char*>(&header), sizeof(message_header));
+    while(bytesAvailable()){
+        read(reinterpret_cast<char*>(&header), sizeof(message_header));
         char buffer[header.length];
-        socket->read(buffer,header.length);
+        read(buffer,header.length);
         switch(header.type){
         case(MSG_TYPE_NOP):
             break;
@@ -60,7 +59,7 @@ void CommClass::readMessage(){
     }
 }
 
-bool CommClass::gererNewBoard(char* message, uint32_t length){
+bool SocketCommun::gererNewBoard(char* message, uint32_t length){
     data_carte carte_courante;
     int pos=0, curr_len=0,curr_mot=0;
     int mots[25];
@@ -93,17 +92,12 @@ bool CommClass::gererNewBoard(char* message, uint32_t length){
     return true;
 }
 
-void CommClass::sendGuess(int nb){
+void SocketCommun::sendGuess(int nb){
     message_header header;
     header.type = MSG_TYPE_GUESS;
     header.length = 1;
-    char* buffer = new char[sizeof(header)+1];
+    char buffer[sizeof(header)+1];
     memcpy(buffer,&header,sizeof(header));
     buffer[sizeof(header)]=nb;
-    sendMessage(buffer,sizeof(header)+1);
-    delete [] buffer;
-}
-
-CommClass::~CommClass(){
-    socket->deleteLater();
+    write(buffer,sizeof(header)+1);
 }

@@ -31,17 +31,16 @@ void MainWindowClient::connexion(){
         return;
     }
 
-    communication = new CommClass(address,port,this);
+    communication = new SocketCommun(address,port,this);
     comm_exists=true;
-    connect(communication->socket,&QTcpSocket::connected,this,&MainWindowClient::connexionEtab);
+    connect(communication,&QTcpSocket::connected,this,&MainWindowClient::connexionEtab);
     communication->lancerCo();
     ui1->lineEdit->setText("Connexion en cours");
 }
 
 void MainWindowClient::connexionEtab(){
     ui1->lineEdit->setText("Connexion établie ! Récup plateau en cours");
-    connect(communication,&CommClass::newBoard,this,&MainWindowClient::changerBoard);
-    connect(communication->socket,&QTcpSocket::readyRead,communication,&CommClass::readMessage);
+    connect(communication,&SocketCommun::newBoard,this,&MainWindowClient::changerBoard);
     communication->getNewBoard();
 }
 
@@ -64,9 +63,9 @@ void MainWindowClient::changerBoard(){
         if(carte->getType()!=SaisPas){
             carte->setGuess();
         }
-        connect(carte,&QCard::cardClicked,communication,&CommClass::sendGuess);
+        connect(carte,&QCard::cardClicked,communication,&SocketCommun::sendGuess);
     }
-    connect(communication,&CommClass::carteUpdate,this,&MainWindowClient::guessCarte,Qt::UniqueConnection);
+    connect(communication,&SocketCommun::carteUpdate,this,&MainWindowClient::guessCarte,Qt::UniqueConnection);
 }
 
 void MainWindowClient::guessCarte(char nb, typeCarte type){

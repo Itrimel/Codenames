@@ -1,9 +1,8 @@
-#ifndef COMMCLASS_H
-#define COMMCLASS_H
+#ifndef SOCKETCOMMUN_H
+#define SOCKETCOMMUN_H
 
-#include <QHostAddress>
 #include <QTcpSocket>
-#include <QObject>
+#include <QHostAddress>
 #include <QVector>
 #include "Commun/protocole.h"
 
@@ -12,30 +11,26 @@ struct data_carte{
     typeCarte type;
 };
 
-class CommClass : public QObject
+class SocketCommun : public QTcpSocket
 {
     Q_OBJECT
-
 public:
-    CommClass(QHostAddress, quint16, QObject*);
-    ~CommClass();
-    QTcpSocket* socket;
+    SocketCommun(QHostAddress,quint16,QObject*);
     void lancerCo();
     void getNewBoard();
     QVector<data_carte> plateau_courant=QVector<data_carte>(25);
     void readMessage();
 signals:
-    void coEtablie();
     void newBoard();
     void carteUpdate(char,typeCarte);
 public slots:
     void sendGuess(int);
-
 private:
     const QHostAddress adresse;
     const quint16 port;
-    void sendMessage(char*,int);
     bool gererNewBoard(char*, uint32_t);
+private slots:
+    void coEtablie();
 };
 
-#endif // COMMCLASS_H
+#endif // SOCKETCOMMUN_H
