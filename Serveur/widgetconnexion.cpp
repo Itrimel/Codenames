@@ -25,6 +25,7 @@ WidgetConnexion::WidgetConnexion(QWidget* parent,QMenuBar* menuBar, std::vector<
 void WidgetConnexion::goPasCo(){
     etat=PasCo;
     setText("<font color=red>Pas de connexion</font>");
+    menuBar->setCornerWidget(this);
     clignotement_pas_co->start(600);
 }
 
