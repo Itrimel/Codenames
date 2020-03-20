@@ -3,8 +3,8 @@
 
 #define NB_MOTS 398
 
-extern char _binary_liste_mots_txt_start;
-extern char _binary_liste_mots_txt_end;
+extern char _binary____Codenames_Commun_liste_mots_txt_start;
+extern char _binary____Codenames_Commun_liste_mots_txt_end;
 
 MainWindowServeur::MainWindowServeur(QWidget *parent)
     : QMainWindow(parent)
@@ -25,7 +25,7 @@ MainWindowServeur::MainWindowServeur(QWidget *parent)
 void MainWindowServeur::creerNouvellePartie(){
     //Génération de la liste de mots
     //Commande pour convertir le fichier .txt en .o : objcopy --input binary --output elf64-x86-64 --binary-architecture i386:x86-64 liste_mots.txt liste_mots.o
-    QByteArray liste_mots_data(&_binary_liste_mots_txt_start,_binary_liste_mots_txt_end-_binary_liste_mots_txt_start);
+    QByteArray liste_mots_data(&_binary____Codenames_Commun_liste_mots_txt_start,_binary____Codenames_Commun_liste_mots_txt_end-_binary____Codenames_Commun_liste_mots_txt_start);
     QTextStream liste_mots_stream(liste_mots_data);
     std::vector<QString> liste_mots;
     for(int i=0; i<NB_MOTS; i++){

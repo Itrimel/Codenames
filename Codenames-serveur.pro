@@ -40,4 +40,11 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+mytarget.target = liste_mots.o
+mytarget.commands = objcopy --input binary --output elf64-x86-64 --binary-architecture i386:x86-64 ../Codenames/Commun/liste_mots.txt liste_mots.o
+mytarget.depends = mytarget2 ../Codenames/Commun/liste_mots.txt
+mytarget2.commands = @echo Building liste_mots.o
+
 LIBS+=liste_mots.o
+QMAKE_EXTRA_TARGETS += mytarget mytarget2
+PRE_TARGETDEPS += liste_mots.o
