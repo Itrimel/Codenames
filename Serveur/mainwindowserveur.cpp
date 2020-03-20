@@ -49,7 +49,7 @@ void MainWindowServeur::creerNouvellePartie(){
     if(quicestquicommence==Rouge){
         label_qui_commence->setText("<font color=red>Les rouges commencent</font>");
     } else {
-        label_qui_commence->setText("<font color=green>Les verts commencent</font>");
+        label_qui_commence->setText("<font color=blue>Les bleus commencent</font>");
     }
 
     //Choix des mots
