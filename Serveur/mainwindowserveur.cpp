@@ -1,11 +1,6 @@
 #include "mainwindowserveur.h"
 #include "ui_serveur.h"
 
-#define NB_MOTS 398
-
-extern char _binary____Codenames_Commun_liste_mots_txt_start;
-extern char _binary____Codenames_Commun_liste_mots_txt_end;
-
 MainWindowServeur::MainWindowServeur(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Serveur)
@@ -28,20 +23,18 @@ MainWindowServeur::MainWindowServeur(QWidget *parent)
 }
 
 void MainWindowServeur::creerNouvellePartie(){
-    //Génération de la liste de mots
-    //Commande pour convertir le fichier .txt en .o : objcopy --input binary --output elf64-x86-64 --binary-architecture i386:x86-64 liste_mots.txt liste_mots.o
-    QByteArray liste_mots_data(&_binary____Codenames_Commun_liste_mots_txt_start,_binary____Codenames_Commun_liste_mots_txt_end-_binary____Codenames_Commun_liste_mots_txt_start);
-    QTextStream liste_mots_stream(liste_mots_data);
-    std::vector<QString> liste_mots;
-    for(int i=0; i<NB_MOTS; i++){
-        liste_mots.emplace_back(liste_mots_stream.readLine());
-        liste_mots.back().front()=liste_mots.back().front().toUpper();
-    }
 
     bool found;
     std::vector<int> pos;
     int nb;
     QRandomGenerator *generator = QRandomGenerator::system();
+    std::vector<QString> liste_mots;
+
+    //Génération de la liste de mots
+    for(auto i = liste_mots_brut.begin(); i< liste_mots_brut.end(); i++){
+        liste_mots.emplace_back(QString::fromStdString(*i));
+        liste_mots.back().front()=liste_mots.back().front().toUpper();
+    }
 
     //Qui c'est qui commence
     quicestquicommence = generator->bounded(2) ? Rouge : Bleu ;
@@ -54,7 +47,7 @@ void MainWindowServeur::creerNouvellePartie(){
 
     //Choix des mots
     for(int i = 0; i<25; i++){
-        label1:nb = generator->bounded(NB_MOTS);
+        label1:nb = generator->bounded((int)liste_mots.size());
         found= (std::find(pos.begin(), pos.end(), nb) != pos.end())  ;
         if(found){goto label1;} //Je fais ce que je veux merde !
         pos.emplace_back(nb);

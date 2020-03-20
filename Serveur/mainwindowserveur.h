@@ -11,6 +11,7 @@
 #include "Commun/qcard.h"
 #include "qglobaipdiag.h"
 #include "widgetconnexion.h"
+#include "Commun/liste_mots.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Serveur; }
