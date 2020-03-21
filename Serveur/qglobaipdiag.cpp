@@ -24,7 +24,7 @@ QGlobaIPDiag::QGlobaIPDiag(QString texte, QWidget* parent= nullptr):
             update_add->stop();
             if(reply->error() != QNetworkReply::NoError) {
                 //failure
-                setText("erreur de connexion ! ");
+                setText(QString("erreur de connexion : ")+reply->error());
                 qDebug() << "error : " << reply->error();
             } else { //success
                 //parse the json reply to extract the IP address

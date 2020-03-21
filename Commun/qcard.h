@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QPainter>
-#include <iostream>
 #include <QFontMetrics>
 #include <QMouseEvent>
 #include <algorithm>

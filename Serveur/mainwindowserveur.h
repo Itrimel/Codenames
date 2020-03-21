@@ -2,8 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QTextStream>
-#include <QFile>
 #include <QRandomGenerator>
 #include <QLabel>
 #include <QMessageBox>

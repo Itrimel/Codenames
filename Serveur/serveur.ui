@@ -32,7 +32,6 @@
     <addaction name="actionNouvelle_partie"/>
     <addaction name="actionObtenir_adresse_IP"/>
     <addaction name="actionObtenir_adresse_IP_globale"/>
-    <addaction name="actionTest"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
