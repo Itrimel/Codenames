@@ -4,7 +4,7 @@ Petit projet fait sous confinement pour pouvoir jouer au jeu Codenames via ordin
 
 ## Utilisation
 
- - Télecharger les 2 programmes Codenames-client et Codenames-serveur (ou les compiler)
+ - [Télecharger](https://github.com/Itrimel/Codenames/releases/tag/v1.0) les 2 programmes Codenames-client et Codenames-serveur (ou les compiler). Les programmes Linux nécessitent d'avoir les librairies partagées Qt5 installées sur le système
  - Un espion lance le programme Codenames-serveur pour créer la partie. Si les autres espions ne sont pas au même endroit, je recommande un parteg d'écran (je réflechis à un moyen de changer ça)
  - Il récupère son adresse IP locale (si les autres joueurs sont sur le même réseau : même box, même routeur, même hotspot ...) ou externe dans le menu pour la donner aux agents
  - Chaque agent/groupe d'agents lance le programme Codenames-client, entre l'adresse IP fournie par le serveur et se connecte
