@@ -1,8 +1,8 @@
 #ifndef QGLOBAIPDIAG_H
 #define QGLOBAIPDIAG_H
 
-#include <QWidget>
 #include <QTimer>
+#include <QLabel>
 #include <QMessageBox>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -10,27 +10,31 @@
 #include <QUrlQuery>
 #include "serveur_internet_infos.h"
 
-class QGlobaIPDiag : public QMessageBox
+class ExtIPGet : public QObject
 {
+    Q_OBJECT
+
 public:
-    QGlobaIPDiag(QString, QWidget*);
-    ~QGlobaIPDiag(){
+    ExtIPGet(QObject*, QLabel*);
+    ~ExtIPGet(){
         if(!gotReply){
             update_add->stop();
         }
         manager->deleteLater();
         delete update_add;
     }
+signals:
+    void setExtIP(QString);
 
 private:
-    const QString texte;
     int nb_points=0;
     QTimer* update_add;
+    QNetworkReply* reply;
     QNetworkAccessManager* manager;
     bool gotReply=false;
+    QLabel* label;
 private slots:
     void update_text();
-    void manageReply(QNetworkReply*);
 };
 
 #endif // QGLOBAIPDIAG_H

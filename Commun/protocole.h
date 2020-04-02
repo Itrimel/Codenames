@@ -18,14 +18,14 @@ enum typeJoueur : char {
 };
 
 enum message_type : uint8_t {
-    MSG_TYPE_NOP        = 0,
-    MSG_TYPE_BOARD      = 1, // Format : nom + 0 + typeCarte + 0 + nom ....
-    MSG_TYPE_GUESS      = 2, // Format : un char, position de la carte
-    MSG_TYPE_UPDATE     = 3,
-    MSG_TYPE_PING       = 4,
-    MSG_TYPE_GET_BOARD  = 5,
-    MSG_TYPE_SERVEUR_PRET   = 6,
-    MSG_TYPE_TYPE_JOUEUR  = 7 // Format : typeJoueur
+    MSG_TYPE_NOP            = 0,
+    MSG_TYPE_BOARD          = 1, // Format : nom + 0 + typeCarte + 0 + nom ....
+    MSG_TYPE_GUESS          = 2, // Format : un char, position de la carte
+    MSG_TYPE_UPDATE         = 3,
+    MSG_TYPE_PING           = 4,
+    MSG_TYPE_GET_BOARD      = 5,
+    MSG_TYPE_ASK_TYPE       = 6,
+    MSG_TYPE_TYPE_JOUEUR    = 7 // Format : typeJoueur
 };
 
 struct message_header {

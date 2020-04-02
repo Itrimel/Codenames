@@ -18,20 +18,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Commun/qcard.cpp \
     Commun/socketcommun.cpp \
+    Serveur/extipget.cpp \
     Serveur/main_serveur.cpp \
     Serveur/mainwindowserveur.cpp \
-    Serveur/qglobaipdiag.cpp \
-    Serveur/widgetconnexion.cpp
+    Serveur/serveurconnexions.cpp
 
 HEADERS += \
     Commun/liste_mots.h \
     Commun/protocole.h \
     Commun/qcard.h \
     Commun/socketcommun.h \
+    Serveur/extipget.h \
     Serveur/mainwindowserveur.h \
-    Serveur/qglobaipdiag.h \
     Serveur/serveur_internet_infos.h \
-    Serveur/widgetconnexion.h
+    Serveur/serveurconnexions.h
 
 FORMS += \
     Serveur/serveur.ui

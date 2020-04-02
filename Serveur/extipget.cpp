@@ -1,12 +1,12 @@
-#include "qglobaipdiag.h"
+#include "extipget.h"
 
-QGlobaIPDiag::QGlobaIPDiag(QString texte, QWidget* parent= nullptr):
-    QMessageBox(parent),
-    texte(texte)
+ExtIPGet::ExtIPGet(QObject* parent,QLabel* label):
+    QObject(parent),
+    label(label)
 {
     update_text();
     update_add = new QTimer(this);
-    connect(update_add,&QTimer::timeout,this,&QGlobaIPDiag::update_text);
+    connect(update_add,&QTimer::timeout,this,&ExtIPGet::update_text);
     update_add->start(800);
 
     //Largement copié de https://stackoverflow.com/questions/47844479/qt-get-external-ip-address-using-qnetworkreply
@@ -16,7 +16,7 @@ QGlobaIPDiag::QGlobaIPDiag(QString texte, QWidget* parent= nullptr):
     query.addQueryItem("format", "json");
     url.setQuery(query);
 
-    QNetworkReply* reply = manager->get(QNetworkRequest(url));
+    reply = manager->get(QNetworkRequest(url));
 
     QObject::connect(reply, &QNetworkReply::finished,
                          [&](){
@@ -24,32 +24,24 @@ QGlobaIPDiag::QGlobaIPDiag(QString texte, QWidget* parent= nullptr):
             update_add->stop();
             if(reply->error() != QNetworkReply::NoError) {
                 //failure
-                setText(QString("erreur de connexion : ")+reply->error());
+                emit setExtIP(QString("erreur de connexion : ")+reply->error());
                 qDebug() << "error : " << reply->error();
             } else { //success
                 //parse the json reply to extract the IP address
-                setText(texte+QJsonDocument::fromJson(reply->readAll()).object().value("ip").toString()+QString(":%1").arg(PORT_SERVEUR));
+                emit setExtIP(QJsonDocument::fromJson(reply->readAll()).object().value("ip").toString()+QString(":%1").arg(PORT_SERVEUR));
             }
             //delete reply later to prevent memory leak
             reply->deleteLater();
+            this->deleteLater();
         });
-
-    this->exec();
 }
 
-void QGlobaIPDiag::update_text(){
-    QString temp=texte;
+void ExtIPGet::update_text(){
+    QString temp="";
     for(int i=0;i<nb_points+1;i++){
         temp+=".";
     }
-    setText(temp);
+    label->setText(temp);
     nb_points=(nb_points+1)%4;
-}
-
-void QGlobaIPDiag::manageReply(QNetworkReply* networkReply){
-    gotReply=true;
-    update_add->stop();
-    setText(texte+QJsonDocument::fromJson(networkReply->readAll()).object().value("ip").toString()+QString(":%1").arg(PORT_SERVEUR));
-    networkReply->deleteLater();
 }
 

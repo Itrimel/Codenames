@@ -76,10 +76,10 @@ void SocketCommun::readMessage(){
             emit askForBoard(this);
             break;
         case(MSG_TYPE_TYPE_JOUEUR):
-            emit nouvJoueur(this,(typeJoueur)buffer[0]);
+            emit typeRecu(this,(typeJoueur)buffer[0]);
             break;
-        case(MSG_TYPE_SERVEUR_PRET):
-            emit coPrete();
+        case(MSG_TYPE_ASK_TYPE):
+            emit demandeType();
             break;
         default:
             //Implement pas normal
@@ -163,9 +163,9 @@ void SocketCommun::sendGuess(int nb){
     socket->write(buffer,sizeof(header)+1);
 }
 
-void SocketCommun::sendCoPrete(){
+void SocketCommun::sendAskType(){
     message_header header;
-    header.type = MSG_TYPE_SERVEUR_PRET;
+    header.type = MSG_TYPE_ASK_TYPE;
     header.length = 1;
     char buffer[sizeof(header)+1];
     memcpy(buffer,&header,sizeof(header));

@@ -5,21 +5,34 @@ MainWindowServeur::MainWindowServeur(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Serveur)
 {
-    ui->setupUi(this);
-
-    label_qui_commence = new QLabel(parent);
-    ui->gridLayout->addWidget(label_qui_commence,0,0,1,5,Qt::AlignCenter);
-    ui->gridLayout->setRowStretch(0,1);
-    for(int i=1;i<6;ui->gridLayout->setRowStretch(i++,4));
-
     creerNouvellePartie();
 
-    WidgetConnexion *label = new WidgetConnexion(parent,ui->menubar,liste_cartes);
-    ui->menubar->setCornerWidget(label);
+    serveur = new ServeurConnexions(parent,liste_cartes);
 
-    connect(ui->actionNouvelle_partie,&QAction::triggered,this,&MainWindowServeur::nouvPartie);
-    connect(ui->actionObtenir_adresse_IP,&QAction::triggered,this,&MainWindowServeur::adresseIPLocale);
-    connect(ui->actionObtenir_adresse_IP_globale,&QAction::triggered,this,&MainWindowServeur::adresseIPGlobale);
+    ui->setupUi(this);
+
+    setIPLocal(ui->label_ip_loc);
+    ip_ext_getter = new ExtIPGet(parent,ui->label_ip_ext);
+    connect(ip_ext_getter,&ExtIPGet::setExtIP,this,&MainWindowServeur::setExtIP);
+    nbAgents(0);
+    nbEspions(0);
+
+    connect(serveur,&ServeurConnexions::nbAgents,this,&MainWindowServeur::nbAgents);
+    connect(serveur,&ServeurConnexions::nbEspions,this,&MainWindowServeur::nbEspions);
+}
+
+static void setIPLocal(QLabel* label){
+    auto list_adresses = QNetworkInterface::allAddresses();
+    QList<QHostAddress> list = QNetworkInterface::allAddresses();
+    QString adresse_loc;
+
+    for(int nIter=0; nIter<list.count(); nIter++){
+        if(!list[nIter].isLoopback())
+            if (list[nIter].protocol() == QAbstractSocket::IPv4Protocol )
+                adresse_loc = list[nIter].toString();
+    }
+
+    label->setText(adresse_loc+QString(":%1").arg(PORT_SERVEUR));
 }
 
 void MainWindowServeur::creerNouvellePartie(){
@@ -39,11 +52,6 @@ void MainWindowServeur::creerNouvellePartie(){
     //Qui c'est qui commence
     quicestquicommence = generator->bounded(2) ? Rouge : Bleu ;
     quicestquicontinue = quicestquicommence==Rouge ? Bleu : Rouge;
-    if(quicestquicommence==Rouge){
-        label_qui_commence->setText("<font color=red>Les rouges commencent</font>");
-    } else {
-        label_qui_commence->setText("<font color=blue>Les bleus commencent</font>");
-    }
 
     //Choix des mots
     for(int i = 0; i<25; i++){
@@ -63,52 +71,42 @@ void MainWindowServeur::creerNouvellePartie(){
         lay[nb] = (i%2) ? quicestquicontinue : quicestquicommence;
     }
 
-    //Construction de l'affichage
-    liste_cartes->clear();
+    //Construction de la liste
     for(int i=0; i<25; i++){
-        liste_cartes->emplace_back(new QCard(i,lay[i],liste_mots[pos[i]],liste_cartes,ui->centralwidget));
-        ui->gridLayout->addWidget(liste_cartes->back(),(i%5)+1,i/5);
+        liste_cartes->at(i).carte = liste_mots[pos[i]];
+        liste_cartes->at(i).type = lay[i];
+    }
+    emit nouvPartie();
+}
+
+void MainWindowServeur::nbAgents(int nb){
+    if(nb==0){
+        ui->label_agents->setStyleSheet("font-weight: bold; color: red");
+        ui->label_agents->setText("0");
+    } else {
+        ui->label_agents->setStyleSheet("font-weight: bold; color: green");
+        ui->label_agents->setText(QString(" %1").arg(nb));
     }
 }
 
-void MainWindowServeur::supprimerPartieEnCours(){
-    for(auto i = liste_cartes->begin(); i < liste_cartes->end(); i++){
-        ui->gridLayout->removeWidget(*i);
-        delete *i;
+void MainWindowServeur::nbEspions(int nb){
+    if(nb==0){
+        ui->label_espions->setStyleSheet("font-weight: bold; color: red");
+        ui->label_espions->setText("0");
+    } else {
+        ui->label_espions->setStyleSheet("font-weight: bold; color: green");
+        ui->label_espions->setText(QString(" %1").arg(nb));
     }
 }
 
-void MainWindowServeur::nouvPartie(){
-    supprimerPartieEnCours();
-    creerNouvellePartie();
-    reinterpret_cast<WidgetConnexion*>(ui->menubar->cornerWidget())->resendBoard();
+void MainWindowServeur::setExtIP(QString texte){
+    ui->label_ip_ext->setText(texte);
 }
 
-void MainWindowServeur::adresseIPLocale(){
-    QMessageBox infoIP(ui->centralwidget);
-    auto list_adresses = QNetworkInterface::allAddresses();
-    QList<QHostAddress> list = QNetworkInterface::allAddresses();
-    QString adresse_loc;
-
-    for(int nIter=0; nIter<list.count(); nIter++){
-        if(!list[nIter].isLoopback())
-            if (list[nIter].protocol() == QAbstractSocket::IPv4Protocol )
-                adresse_loc = list[nIter].toString();
-    }
-
-    infoIP.setText("L'adresse IP locale du serveur est : "+adresse_loc+QString(":%1").arg(PORT_SERVEUR));
-    infoIP.exec();
-}
-
-void MainWindowServeur::adresseIPGlobale(){
-    QGlobaIPDiag infoIP("L'adresse IP externe du serveur est : ",ui->centralwidget);
-
-}
 
 MainWindowServeur::~MainWindowServeur()
 {
     delete ui;
     delete liste_cartes;
-    delete label_qui_commence;
 }
 

@@ -6,9 +6,8 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QNetworkInterface>
-#include "Commun/qcard.h"
-#include "qglobaipdiag.h"
-#include "widgetconnexion.h"
+#include "serveurconnexions.h"
+#include "extipget.h"
 #include "Commun/liste_mots.h"
 
 QT_BEGIN_NAMESPACE
@@ -22,18 +21,22 @@ class MainWindowServeur : public QMainWindow
 public:
     MainWindowServeur(QWidget *parent = nullptr);
     ~MainWindowServeur();
+signals:
+    void nouvPartie();
 
 private:
     Ui::Serveur *ui;
+    ServeurConnexions* serveur;
     typeCarte quicestquicommence;
     typeCarte quicestquicontinue;
-    void creerNouvellePartie();
-    void supprimerPartieEnCours();
-    std::vector<QCard*>* liste_cartes = new std::vector<QCard*>;
-    QLabel* label_qui_commence;
+    std::vector<data_carte>* liste_cartes = new std::vector<data_carte>(25);
+    ExtIPGet* ip_ext_getter;
 private slots:
-    void nouvPartie();
-    void adresseIPLocale();
-    void adresseIPGlobale();
+    void creerNouvellePartie();
+    void nbAgents(int);
+    void nbEspions(int);
+    void setExtIP(QString);
 };
+
+static void setIPLocal(QLabel*);
 #endif // MAINWINDOW_H
