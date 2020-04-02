@@ -2,6 +2,7 @@
 #define QCARD_H
 
 #include <QWidget>
+#include <QObject>
 #include <QPainter>
 #include <QFontMetrics>
 #include <QMouseEvent>

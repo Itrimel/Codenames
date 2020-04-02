@@ -30,11 +30,13 @@ public:
 private:
     etatCo etat=PasCo;
     void goPasCo();
+    auto findTypeJoueur(SocketCommun*, typeJoueur*);
     QTimer* clignotement_pas_co;
     bool clign=true;
     QMenuBar* menuBar;
     QTcpServer* server;
-    std::vector<SocketCommun*> connections;
+    std::vector<SocketCommun*> connections_agents;
+    std::vector<SocketCommun*> connections_espions;
     std::vector<QCard*>* liste_cartes;
 private slots:
     void textePasCo();
@@ -42,6 +44,7 @@ private slots:
     void gererErreur(SocketCommun*,QAbstractSocket::SocketError);
     void sendBoard(SocketCommun*);
     void gererGuess(SocketCommun*, char);
+    void nouvJoueur(SocketCommun*,typeJoueur);
 };
 
 #endif // WIDGETCONNEXION_H

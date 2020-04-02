@@ -31,6 +31,7 @@ private:
     QLabel* label_co = new QLabel();
     SocketCommun* reco_socket;
     int num_reco=0;
+    typeJoueur joueur = Agent;
 private slots:
     void connexion();
     void reconnexion();

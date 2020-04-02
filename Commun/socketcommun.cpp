@@ -31,7 +31,6 @@ void SocketCommun::coEtablie(){
     connect(socket,&QTcpSocket::readyRead,this,&SocketCommun::readMessage);
     disconnect(socket,qOverload<QAbstractSocket::SocketError>(&QTcpSocket::error),this,&SocketCommun::gererErreurCo);
     connect(socket,qOverload<QAbstractSocket::SocketError>(&QTcpSocket::error),this,&SocketCommun::gererErreur);
-    emit coPrete();
 }
 
 void SocketCommun::getNewBoard(){
@@ -75,6 +74,12 @@ void SocketCommun::readMessage(){
             break;
         case(MSG_TYPE_GET_BOARD):
             emit askForBoard(this);
+            break;
+        case(MSG_TYPE_TYPE_JOUEUR):
+            emit nouvJoueur(this,(typeJoueur)buffer[0]);
+            break;
+        case(MSG_TYPE_SERVEUR_PRET):
+            emit coPrete();
             break;
         default:
             //Implement pas normal
@@ -155,6 +160,26 @@ void SocketCommun::sendGuess(int nb){
     char buffer[sizeof(header)+1];
     memcpy(buffer,&header,sizeof(header));
     buffer[sizeof(header)]=nb;
+    socket->write(buffer,sizeof(header)+1);
+}
+
+void SocketCommun::sendCoPrete(){
+    message_header header;
+    header.type = MSG_TYPE_SERVEUR_PRET;
+    header.length = 1;
+    char buffer[sizeof(header)+1];
+    memcpy(buffer,&header,sizeof(header));
+    buffer[sizeof(header)]=0;
+    socket->write(buffer,sizeof(header)+1);
+}
+
+void SocketCommun::sendJoueurType(typeJoueur joueur){
+    message_header header;
+    header.type = MSG_TYPE_TYPE_JOUEUR;
+    header.length = 1;
+    char buffer[sizeof(header)+1];
+    memcpy(buffer,&header,sizeof(header));
+    buffer[sizeof(header)]=joueur;
     socket->write(buffer,sizeof(header)+1);
 }
 

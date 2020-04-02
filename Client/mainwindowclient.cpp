@@ -46,6 +46,7 @@ void MainWindowClient::connexionEtab(){
     if(ui1_exists) {ui1->lineEdit->setText("Connexion établie ! Récup plateau en cours");}
     addr = communication->getAddr();
     prt = communication->getPrt();
+    communication->sendJoueurType(joueur);
     connect(communication,&SocketCommun::newBoard,this,&MainWindowClient::changerBoard);
     connect(communication,&SocketCommun::erreur,this,&MainWindowClient::erreur);
     communication->getNewBoard();

@@ -11,6 +11,12 @@ enum typeCarte : char {
     SaisPas = 5
 };
 
+enum typeJoueur : char {
+    Agent           = 1,
+    Espion          = 2,
+    ErreurJoueur    = 0
+};
+
 enum message_type : uint8_t {
     MSG_TYPE_NOP        = 0,
     MSG_TYPE_BOARD      = 1, // Format : nom + 0 + typeCarte + 0 + nom ....
@@ -18,12 +24,13 @@ enum message_type : uint8_t {
     MSG_TYPE_UPDATE     = 3,
     MSG_TYPE_PING       = 4,
     MSG_TYPE_GET_BOARD  = 5,
-    MSG_TYPE_OK         = 6
+    MSG_TYPE_SERVEUR_PRET   = 6,
+    MSG_TYPE_TYPE_JOUEUR  = 7 // Format : typeJoueur
 };
 
 struct message_header {
     uint8_t length;
-    uint32_t type;
+    uint8_t type;
 } __attribute__((packed));
 
 #endif // PROTOCOLE_H
