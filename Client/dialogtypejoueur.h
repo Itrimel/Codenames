@@ -13,10 +13,10 @@ class DialogTypeJoueur : public QDialog
 {
     Q_OBJECT
 public:
-    DialogTypeJoueur(QWidget*, SocketCommun*);
+    DialogTypeJoueur(QWidget*, SocketCommun**);
     ~DialogTypeJoueur();
 private:
-    SocketCommun* socket;
+    SocketCommun** socket;
     Ui::Dialog* ui;
     typeJoueur joueur;
     void closeEvent(QCloseEvent *) override;

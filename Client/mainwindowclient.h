@@ -21,7 +21,7 @@ private:
     Ui::Client1 *ui1;
     Ui::Client2 *ui2;
     SocketCommun* communication;
-    DialogTypeJoueur* dialogue;
+    DialogTypeJoueur* dialogueType = new DialogTypeJoueur(this,&communication);
     bool comm_exists = false;
     bool ui1_exists = true;
     std::vector<QCard*>* liste_cartes = new std::vector<QCard*>;

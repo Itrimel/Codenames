@@ -48,14 +48,12 @@ void MainWindowClient::demandeType(){
     ui1_exists = false;
 
     //Dialogue lancé qd ASK_TYPE arrive, se finit qd BOARD arrive
-    dialogue = new DialogTypeJoueur(this,communication);
-    connect(dialogue, &DialogTypeJoueur::finished,this,&MainWindowClient::finDemandeType);
-    dialogue->open();
+    connect(dialogueType, &DialogTypeJoueur::finished,this,&MainWindowClient::finDemandeType,Qt::UniqueConnection);
+    dialogueType->open();
 }
 
 void MainWindowClient::finDemandeType(int res){
     joueur = (typeJoueur)res;
-    dialogue->deleteLater();
     changerBoard();
 }
 
@@ -116,5 +114,6 @@ MainWindowClient::~MainWindowClient()
     delete ui2;
     if(comm_exists) {delete communication;}
     delete liste_cartes;
+    delete dialogueType;
 }
 

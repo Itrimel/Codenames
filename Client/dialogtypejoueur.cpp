@@ -1,7 +1,7 @@
 #include "dialogtypejoueur.h"
 #include "ui_dialogtypejoueur.h"
 
-DialogTypeJoueur::DialogTypeJoueur(QWidget* parent, SocketCommun* socket):
+DialogTypeJoueur::DialogTypeJoueur(QWidget* parent, SocketCommun** socket):
     QDialog(parent,Qt::WindowTitleHint | Qt::WindowSystemMenuHint),
     socket(socket),
     ui(new Ui::Dialog)
@@ -29,11 +29,15 @@ void DialogTypeJoueur::choixFait(){
         joueur = Agent;
     }
     ui->label->setText("Récupération du plateau en cours");
-    connect(socket,&SocketCommun::newBoard,this,&DialogTypeJoueur::finDiag);
-    socket->sendJoueurType(joueur);
+    connect(*socket,&SocketCommun::newBoard,this,&DialogTypeJoueur::finDiag,Qt::UniqueConnection);
+    (*socket)->sendJoueurType(joueur);
 }
 
 void DialogTypeJoueur::finDiag(){
+    ui->radioButton_espion->setEnabled(true);
+    ui->radioButton_agent->setEnabled(true);
+    ui->pushButton->setEnabled(true);
+    ui->label->setText("Choix du camp");
     done(joueur);
 }
 
