@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QLabel>
 #include "dialogtypejoueur.h"
 #include "Commun/socketcommun.h"
 #include "Commun/qcard.h"
@@ -22,6 +23,7 @@ private:
     Ui::Client2 *ui2;
     SocketCommun* communication;
     DialogTypeJoueur* dialogueType = new DialogTypeJoueur(this,&communication);
+    QLabel* label_qui_commence = new QLabel(this);
     bool comm_exists = false;
     bool ui1_exists = true;
     std::vector<QCard*>* liste_cartes = new std::vector<QCard*>;

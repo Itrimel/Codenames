@@ -64,6 +64,7 @@ void MainWindowClient::finDemandeType(int res){
 
 void MainWindowClient::changerBoard(){
     QCard* carte;
+    int count = 0;
     for(auto i = liste_cartes->begin(); i < liste_cartes->end(); i++){
         ui2->gridLayout->removeWidget(*i);
         delete *i;
@@ -73,12 +74,25 @@ void MainWindowClient::changerBoard(){
     for(int i=0; i<25; i++){
         carte = new QCard(i,communication->plateau_courant[i].type,communication->plateau_courant[i].carte,liste_cartes,ui2->centralwidget);
         liste_cartes->emplace_back(carte);
-        ui2->gridLayout->addWidget(carte,i%5,i/5);
+        ui2->gridLayout->addWidget(carte,i%5+(int)(joueur==Espion),i/5);
+        if(carte->getType()==Rouge) {count++;}
         if(joueur==Agent){
             connect(carte,&QCard::cardClicked,communication,&SocketCommun::sendGuess);
             if(carte->getType()!=SaisPas){ carte->setGuess();}
         }
     }
+    if(joueur==Espion) {
+       if(count ==9) {
+           label_qui_commence->setText("Les rouges commencent");
+           label_qui_commence->setStyleSheet("font-weight: bold; color: red");
+       } else {
+           label_qui_commence->setText("Les bleus commencent");
+           label_qui_commence->setStyleSheet("font-weight: bold; color: blue");
+       }
+       ui2->gridLayout->addWidget(label_qui_commence,0,0,1,5,Qt::AlignCenter);
+       ui2->gridLayout->setRowStretch(0,1);
+       for(int i = 1; i<6; ui2->gridLayout->setRowStretch(i++,4));
+   }
     connect(communication,&SocketCommun::carteUpdate,this,&MainWindowClient::guessCarte,Qt::UniqueConnection);
 
     //Ajout d'update pour pouvoir propager la taille opti du texte à tous les QCard
