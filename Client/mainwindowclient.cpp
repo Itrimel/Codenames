@@ -9,64 +9,59 @@ MainWindowClient::MainWindowClient(QWidget *parent)
 {
     ui1->setupUi(this);
 
-    connect(ui1->pushButton,&QPushButton::released,this,&MainWindowClient::connexion);
-    ui1->lineEdit->setText("127.0.0.1:8081");
+    connect(ui1->pushButton,&QPushButton::clicked,this,&MainWindowClient::connexion);
 }
 
 void MainWindowClient::connexion(){
     if(comm_exists){
         communication->deleteLater();
     }
-    auto splitting = ui1->lineEdit->text().split(":");
-    if(splitting.length()!=2){
-        ui1->lineEdit->setText("Format invalide, doit être adresse:port");
-        return;
-    }
-    QHostAddress address(splitting[0]);
+    ui1->pushButton->setEnabled(false);
+
+    address = QHostAddress(ui1->ip1->text()+"."+ui1->ip2->text()+'.'+ui1->ip3->text()+"."+ui1->ip4->text());
+    port = ui1->port_l->text().toInt();
+
     if(QAbstractSocket::IPv4Protocol != address.protocol()){
-        ui1->lineEdit->setText("L'adresse doit être en IPv4");
+        ui1->label_status->setText("l'adresse IP n'est pas bonne");
+        ui1->pushButton->setEnabled(true);
         return;
     }
-    bool val=false;
-    quint16 port = splitting[1].toUInt(&val,10);
-    if(val==false){
-        ui1->lineEdit->setText("Port non valide");
+    if(port>65535){
+        ui1->label_status->setText("Port non valide");
+        ui1->pushButton->setEnabled(true);
         return;
     }
 
     communication = new SocketCommun(address,port,this);
     comm_exists=true;
-    connect(communication,&SocketCommun::coPrete,this,&MainWindowClient::connexionEtab);
+    connect(communication,&SocketCommun::demandeType,this,&MainWindowClient::demandeType,Qt::UniqueConnection);
+    connect(communication,&SocketCommun::erreurCo,this,&MainWindowClient::erreurCo);
     communication->lancerCo();
-    ui1->lineEdit->setText("Connexion en cours");
+    ui1->label_status->setText("Connexion en cours");
 }
 
-void MainWindowClient::connexionEtab(){
-    num_reco=0;
-    if(ui1_exists) {ui1->lineEdit->setText("Connexion établie ! Récup plateau en cours");}
-    addr = communication->getAddr();
-    prt = communication->getPrt();
-    communication->sendJoueurType(joueur);
-    connect(communication,&SocketCommun::newBoard,this,&MainWindowClient::changerBoard);
-    connect(communication,&SocketCommun::erreur,this,&MainWindowClient::erreur);
-    communication->getNewBoard();
+void MainWindowClient::demandeType(){
+    disconnect(communication,&SocketCommun::erreurCo, this,&MainWindowClient::erreurCo);
+    connect(communication,&SocketCommun::erreur,this,&MainWindowClient::erreur,Qt::UniqueConnection);
+
+    if(ui1_exists) { ui2->setupUi(this); }
+    ui1_exists = false;
+
+    //Dialogue lancé qd ASK_TYPE arrive, se finit qd BOARD arrive
+    DialogTypeJoueur dialogue(this,communication);
+    joueur = (typeJoueur)dialogue.exec();
+    changerBoard();
 }
 
 
 void MainWindowClient::changerBoard(){
     QCard* carte;
-    if(!premier_plateau){
-        for(auto i = liste_cartes->begin(); i < liste_cartes->end(); i++){
-            ui2->gridLayout->removeWidget(*i);
-            delete *i;
-        }
+    for(auto i = liste_cartes->begin(); i < liste_cartes->end(); i++){
+        ui2->gridLayout->removeWidget(*i);
+        delete *i;
     }
-    ui2->setupUi(this);
-    ui1_exists=false;
-    label_co->setText("<font color=green>Connecté</font>");
-    ui2->menubar->setCornerWidget(label_co);
-    premier_plateau=false;
     liste_cartes->clear();
+
     for(int i=0; i<25; i++){
         carte = new QCard(i,communication->plateau_courant[i].type,communication->plateau_courant[i].carte,liste_cartes,ui2->centralwidget);
         liste_cartes->emplace_back(carte);
@@ -74,7 +69,9 @@ void MainWindowClient::changerBoard(){
         if(carte->getType()!=SaisPas){
             carte->setGuess();
         }
-        connect(carte,&QCard::cardClicked,communication,&SocketCommun::sendGuess);
+        if(joueur==Agent){
+            connect(carte,&QCard::cardClicked,communication,&SocketCommun::sendGuess);
+        }
     }
     connect(communication,&SocketCommun::carteUpdate,this,&MainWindowClient::guessCarte,Qt::UniqueConnection);
 }
@@ -86,15 +83,21 @@ void MainWindowClient::guessCarte(char nb, typeCarte type){
 
 void MainWindowClient::erreur(SocketCommun* comm, QAbstractSocket::SocketError err){
     qDebug() << "Erreur connexion : " << err;
-    num_reco++;
+    //TODO : mieux gérer erreur
+    //Qd repart vers ui1, faire ui1_exists = true
+    /*num_reco++;
     communication->deleteLater();
     communication = new SocketCommun(addr,prt,parent());
     label_co->setText(QString("<font color=red>Déconnecté, tentative de reconnexion %1</font>").arg(num_reco));
     ui2->menubar->setCornerWidget(label_co);
-    connect(communication,&SocketCommun::coPrete,this,&MainWindowClient::connexionEtab);
+    connect(communication,&SocketCommun::coPrete,this,&MainWindowClient::demandeType);
     communication->lancerCo();
     reco_socket=communication;
-    QTimer::singleShot(10*1000,this,&MainWindowClient::reconnexion);
+    QTimer::singleShot(10*1000,this,&MainWindowClient::reconnexion);*/
+}
+
+void MainWindowClient::erreurCo(SocketCommun* socket, QAbstractSocket::SocketError err){
+    //TODO : gérer erreur
 }
 
 void MainWindowClient::reconnexion(){

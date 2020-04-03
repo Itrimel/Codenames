@@ -49,6 +49,7 @@ void SocketCommun::readMessage(){
         socket->read(reinterpret_cast<char*>(&header), sizeof(message_header));
         char buffer[header.length];
         socket->read(buffer,header.length);
+        qDebug() << header.type;
         switch(header.type){
         case(MSG_TYPE_NOP):
             break;

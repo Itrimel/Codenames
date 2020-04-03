@@ -16,12 +16,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Client/dialogtypejoueur.cpp \
     Client/main_client.cpp \
     Client/mainwindowclient.cpp \
     Commun/qcard.cpp \
     Commun/socketcommun.cpp
 
 HEADERS += \
+    Client/dialogtypejoueur.h \
     Client/mainwindowclient.h \
     Commun/protocole.h \
     Commun/qcard.h \
@@ -29,7 +31,8 @@ HEADERS += \
 
 FORMS += \
     Client/client1.ui \
-    Client/client2.ui
+    Client/client2.ui \
+    Client/dialogtypejoueur.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
