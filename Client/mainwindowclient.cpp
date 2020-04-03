@@ -80,6 +80,9 @@ void MainWindowClient::changerBoard(){
         }
     }
     connect(communication,&SocketCommun::carteUpdate,this,&MainWindowClient::guessCarte,Qt::UniqueConnection);
+
+    //Ajout d'update pour pouvoir propager la taille opti du texte à tous les QCard
+    this->update();
 }
 
 void MainWindowClient::guessCarte(char nb, typeCarte type){
