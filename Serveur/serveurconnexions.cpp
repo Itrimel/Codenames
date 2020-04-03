@@ -189,5 +189,6 @@ void ServeurConnexions::creerNouvellePartie(){
     for(int i=0; i<25; i++){
         liste_cartes->at(i).carte = liste_mots[pos[i]];
         liste_cartes->at(i).type = lay[i];
+        liste_cartes->at(i).guessed = false;
     }
 }
