@@ -54,9 +54,13 @@ void MainWindowClient::demandeType(){
 
 void MainWindowClient::finDemandeType(int res){
     joueur = (typeJoueur)res;
+    if(res == Agent){
+        setWindowTitle("Codenames - Agent");
+    } else {
+        setWindowTitle("Codenames - Espion");
+    }
     changerBoard();
 }
-
 
 void MainWindowClient::changerBoard(){
     QCard* carte;
