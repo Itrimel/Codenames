@@ -16,7 +16,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Commun/qcard.cpp \
     Commun/socketcommun.cpp \
     Serveur/extipget.cpp \
     Serveur/main_serveur.cpp \
@@ -26,7 +25,6 @@ SOURCES += \
 HEADERS += \
     Commun/liste_mots.h \
     Commun/protocole.h \
-    Commun/qcard.h \
     Commun/socketcommun.h \
     Serveur/extipget.h \
     Serveur/mainwindowserveur.h \
