@@ -21,10 +21,11 @@ auto ServeurConnexions::findTypeJoueur(SocketCommun* socket, typeJoueur* joueur)
 }
 
 
-ServeurConnexions::ServeurConnexions(QObject* parent,std::vector<data_carte>* liste):
-    QObject(parent),
-    liste_cartes(liste)
+ServeurConnexions::ServeurConnexions(QObject* parent):
+    QObject(parent)
 {
+    creerNouvellePartie();
+
     //initialisation connexion
     server = new QTcpServer();
     connect(server,&QTcpServer::newConnection,this,&ServeurConnexions::nouvCo);
@@ -37,6 +38,7 @@ ServeurConnexions::~ServeurConnexions(){
     for(auto i = connections_espions.begin();i<connections_espions.end();i++){
         delete *i;
     }
+    delete liste_cartes;
 }
 
 void ServeurConnexions::nouvCo(){
@@ -53,6 +55,7 @@ void ServeurConnexions::sendBoard(SocketCommun* sock){
 
     if(joueur==ErreurJoueur){
         qDebug() << "Joueur non enregistré ou inconnu";
+        return;
     }
 
     std::vector<data_carte>* plateau = new std::vector<data_carte>(25);
@@ -82,6 +85,7 @@ void ServeurConnexions::gererGuess(SocketCommun* origine, char nb){
 }
 
 void ServeurConnexions::nouvellePartie(){
+    creerNouvellePartie();
     for(auto i = connections_agents.begin(); i<connections_agents.end(); i++){
         (*i)->sendAskType();
     }
@@ -141,4 +145,46 @@ void ServeurConnexions::typeRecu(SocketCommun* socket, typeJoueur joueur){
     sendBoard(socket);
 }
 
+void ServeurConnexions::creerNouvellePartie(){
 
+    bool found;
+    std::vector<int> pos;
+    int nb;
+    QRandomGenerator *generator = QRandomGenerator::system();
+    std::vector<QString> liste_mots;
+    typeCarte quicestquicommence,quicestquicontinue;
+
+    //Génération de la liste de mots
+    for(auto i = liste_mots_brut.begin(); i< liste_mots_brut.end(); i++){
+        liste_mots.emplace_back(QString::fromStdString(*i));
+        liste_mots.back().front()=liste_mots.back().front().toUpper();
+    }
+
+    //Qui c'est qui commence
+    quicestquicommence = generator->bounded(2) ? Rouge : Bleu ;
+    quicestquicontinue = quicestquicommence==Rouge ? Bleu : Rouge;
+
+    //Choix des mots
+    for(int i = 0; i<25; i++){
+        label1:nb = generator->bounded((int)liste_mots.size());
+        found= (std::find(pos.begin(), pos.end(), nb) != pos.end())  ;
+        if(found){goto label1;} //Je fais ce que je veux merde !
+        pos.emplace_back(nb);
+    }
+
+    //Choix du layout
+    std::vector<typeCarte> lay;
+    lay.assign(25,Neutre);
+    lay.at(generator->bounded(25)) = Noir;
+    for(int i=0; i<17; i++){
+        label2: nb = generator->bounded(25);
+        if(lay[nb]!=Neutre){goto label2;} //Je fais ce que je veux merde ! le retour
+        lay[nb] = (i%2) ? quicestquicontinue : quicestquicommence;
+    }
+
+    //Construction de la liste
+    for(int i=0; i<25; i++){
+        liste_cartes->at(i).carte = liste_mots[pos[i]];
+        liste_cartes->at(i).type = lay[i];
+    }
+}
