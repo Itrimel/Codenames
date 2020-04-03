@@ -29,6 +29,10 @@ ServeurConnexions::ServeurConnexions(QObject* parent):
     //initialisation connexion
     server = new QTcpServer();
     connect(server,&QTcpServer::newConnection,this,&ServeurConnexions::nouvCo);
+    if(!server->listen(QHostAddress::Any,PORT_SERVEUR)){
+        //TODO : raise error
+        qDebug() << "échec connexion : ne peut pas écouter les connexions entrantes";
+    }
 }
 
 ServeurConnexions::~ServeurConnexions(){
@@ -42,6 +46,7 @@ ServeurConnexions::~ServeurConnexions(){
 }
 
 void ServeurConnexions::nouvCo(){
+    qDebug() << "nouvelle co";
     SocketCommun* new_socket = new SocketCommun(server->nextPendingConnection());
     connect(new_socket,&SocketCommun::erreur,this,&ServeurConnexions::gererErreur);
     connect(new_socket,&SocketCommun::guessRecu,this,&ServeurConnexions::gererGuess);
