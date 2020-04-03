@@ -6,8 +6,7 @@ auto ServeurConnexions::findTypeJoueur(SocketCommun* socket, typeJoueur* joueur)
     auto iterator2 = std::find(connections_espions.begin(),connections_espions.end(),socket);
     if(iterator==connections_agents.end()){
         if(iterator2==connections_espions.end()){
-            //ça ne devrait pas arriver
-            //TODO : raise erreur ?
+            //ça peut arriver
             qDebug() << "Pb : pas trouvé socket";
             *joueur = ErreurJoueur;
         } else {
@@ -46,7 +45,6 @@ ServeurConnexions::~ServeurConnexions(){
 }
 
 void ServeurConnexions::nouvCo(){
-    qDebug() << "nouvelle co";
     SocketCommun* new_socket = new SocketCommun(server->nextPendingConnection());
     connect(new_socket,&SocketCommun::erreur,this,&ServeurConnexions::gererErreur);
     connect(new_socket,&SocketCommun::guessRecu,this,&ServeurConnexions::gererGuess);

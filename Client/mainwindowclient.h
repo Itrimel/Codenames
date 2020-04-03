@@ -21,19 +21,17 @@ private:
     Ui::Client1 *ui1;
     Ui::Client2 *ui2;
     SocketCommun* communication;
+    DialogTypeJoueur* dialogue;
     bool comm_exists = false;
     bool ui1_exists = true;
-    bool premier_plateau=true;
     std::vector<QCard*>* liste_cartes = new std::vector<QCard*>;
-    SocketCommun* reco_socket;
-    int num_reco=0;
     typeJoueur joueur;
     QHostAddress address;
     quint16 port;
 private slots:
     void connexion();
-    void reconnexion();
     void demandeType();
+    void finDemandeType(int);
     void changerBoard();
     void guessCarte(char,typeCarte);
     void erreur(SocketCommun*,QAbstractSocket::SocketError);

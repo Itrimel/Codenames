@@ -48,8 +48,14 @@ void MainWindowClient::demandeType(){
     ui1_exists = false;
 
     //Dialogue lancé qd ASK_TYPE arrive, se finit qd BOARD arrive
-    DialogTypeJoueur dialogue(this,communication);
-    joueur = (typeJoueur)dialogue.exec();
+    dialogue = new DialogTypeJoueur(this,communication);
+    connect(dialogue, &DialogTypeJoueur::finished,this,&MainWindowClient::finDemandeType);
+    dialogue->open();
+}
+
+void MainWindowClient::finDemandeType(int res){
+    joueur = (typeJoueur)res;
+    dialogue->deleteLater();
     changerBoard();
 }
 
@@ -100,11 +106,11 @@ void MainWindowClient::erreurCo(SocketCommun* socket, QAbstractSocket::SocketErr
     //TODO : gérer erreur
 }
 
-void MainWindowClient::reconnexion(){
+/*void MainWindowClient::reconnexion(){
     if(communication->stateSocket()!=QAbstractSocket::ConnectedState && communication==reco_socket){
         erreur(communication,QAbstractSocket::UnknownSocketError);
     }
-}
+}*/
 
 MainWindowClient::~MainWindowClient()
 {

@@ -2,6 +2,7 @@
 #define DIALOGTYPEJOUEUR_H
 
 #include <QDialog>
+#include <QCloseEvent>
 #include "Commun/socketcommun.h"
 
 QT_BEGIN_NAMESPACE
@@ -18,6 +19,7 @@ private:
     SocketCommun* socket;
     Ui::Dialog* ui;
     typeJoueur joueur;
+    void closeEvent(QCloseEvent *) override;
 private slots:
     void radioClicked();
     void choixFait();

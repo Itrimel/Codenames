@@ -28,14 +28,14 @@
     </widget>
    </item>
    <item>
-    <widget class="QRadioButton" name="radioButton_2">
+    <widget class="QRadioButton" name="radioButton_agent">
      <property name="text">
       <string>Agent</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QRadioButton" name="radioButton">
+    <widget class="QRadioButton" name="radioButton_espion">
      <property name="text">
       <string>Espion</string>
      </property>

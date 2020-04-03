@@ -9,8 +9,8 @@ DialogTypeJoueur::DialogTypeJoueur(QWidget* parent, SocketCommun* socket):
     setModal(true);
     ui->setupUi(this);
     ui->pushButton->setEnabled(false);
-    connect(ui->radioButton_2,&QRadioButton::toggled,this,&DialogTypeJoueur::radioClicked);
-    connect(ui->radioButton,&QRadioButton::toggled,this,&DialogTypeJoueur::radioClicked);
+    connect(ui->radioButton_agent,&QRadioButton::toggled,this,&DialogTypeJoueur::radioClicked);
+    connect(ui->radioButton_espion,&QRadioButton::toggled,this,&DialogTypeJoueur::radioClicked);
     connect(ui->pushButton,&QPushButton::clicked,this,&DialogTypeJoueur::choixFait);
 }
 
@@ -20,9 +20,9 @@ void DialogTypeJoueur::radioClicked(){
 
 void DialogTypeJoueur::choixFait(){
     ui->pushButton->setEnabled(false);
-    ui->radioButton->setEnabled(false);
-    ui->radioButton_2->setEnabled(false);
-    if(ui->radioButton_2->isChecked()){
+    ui->radioButton_espion->setEnabled(false);
+    ui->radioButton_agent->setEnabled(false);
+    if(ui->radioButton_espion->isChecked()){
         joueur = Espion;
     }
     else {
@@ -35,6 +35,10 @@ void DialogTypeJoueur::choixFait(){
 
 void DialogTypeJoueur::finDiag(){
     done(joueur);
+}
+
+void DialogTypeJoueur::closeEvent(QCloseEvent* event){
+    event->ignore();
 }
 
 DialogTypeJoueur::~DialogTypeJoueur(){
