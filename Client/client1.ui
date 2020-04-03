@@ -1,198 +1,189 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Client1</class>
- <widget class="QMainWindow" name="Client1">
+ <widget class="QDialog" name="Client1">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>386</width>
-    <height>180</height>
+    <height>149</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Connexion</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>IP :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="ip1">
-        <property name="maximumSize">
-         <size>
-          <width>40</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>.</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="ip2">
-        <property name="maximumSize">
-         <size>
-          <width>40</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>.</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="ip3">
-        <property name="maximumSize">
-         <size>
-          <width>40</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>.</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="ip4">
-        <property name="maximumSize">
-         <size>
-          <width>40</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="inputMask">
-         <string>999</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="port_l">
-        <property name="maximumSize">
-         <size>
-          <width>60</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="inputMask">
-         <string>99999</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Status :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_status">
-        <property name="text">
-         <string>Attente de l'entrée de l'adresse</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>Connexion</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>386</width>
-     <height>30</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>IP :</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="ip1">
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="inputMask">
+          <string>999</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="ip2">
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="inputMask">
+          <string>999</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="ip3">
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="inputMask">
+          <string>999</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="ip4">
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="inputMask">
+          <string>999</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="port_l">
+         <property name="maximumSize">
+          <size>
+           <width>60</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="inputMask">
+          <string>99999</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Status :</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_status">
+         <property name="text">
+          <string>Attente de l'entrée de l'adresse</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>Connexion</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

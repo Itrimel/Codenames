@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Client/dialogip.cpp \
     Client/dialogtypejoueur.cpp \
     Client/main_client.cpp \
     Client/mainwindowclient.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
     Commun/socketcommun.cpp
 
 HEADERS += \
+    Client/dialogip.h \
     Client/dialogtypejoueur.h \
     Client/mainwindowclient.h \
     Commun/protocole.h \
