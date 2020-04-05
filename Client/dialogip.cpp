@@ -11,6 +11,8 @@ DialogIP::DialogIP(QWidget* parent, QHostAddress* address,quint16* port,SocketCo
 {
     ui->setupUi(this);
     connect(ui->pushButton,&QPushButton::clicked,this,&DialogIP::connexion);
+    ui->pushButton->setDefault(true);
+    connect(ui->pushButton_2,&QPushButton::clicked,this,&DialogIP::quitterProgramme);
 }
 
 void DialogIP::connexion(){
@@ -24,7 +26,7 @@ void DialogIP::connexion(){
         ui->pushButton->setEnabled(true);
         return;
     }
-    if(ui->port_l->text().toInt()>65535){
+    if(ui->port_l->text().toInt()>65535 || ui->port_l->text().toInt()==0){
         ui->label_status->setText("Port non valide");
         ui->pushButton->setEnabled(true);
         return;
@@ -53,6 +55,10 @@ void DialogIP::finDiag(){
 
 void DialogIP::closeEvent(QCloseEvent* event){
     event->ignore();
+}
+
+void DialogIP::quitterProgramme(){
+    qApp->quit();
 }
 
 DialogIP::~DialogIP(){

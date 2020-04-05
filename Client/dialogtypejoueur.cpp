@@ -9,6 +9,7 @@ DialogTypeJoueur::DialogTypeJoueur(QWidget* parent, SocketCommun** socket):
     setModal(true);
     ui->setupUi(this);
     ui->pushButton->setEnabled(false);
+    ui->pushButton->setDefault(true);
     connect(ui->radioButton_agent,&QRadioButton::toggled,this,&DialogTypeJoueur::radioClicked);
     connect(ui->radioButton_espion,&QRadioButton::toggled,this,&DialogTypeJoueur::radioClicked);
     connect(ui->pushButton,&QPushButton::clicked,this,&DialogTypeJoueur::choixFait);
@@ -29,11 +30,12 @@ void DialogTypeJoueur::choixFait(){
         joueur = Agent;
     }
     ui->label->setText("Récupération du plateau en cours");
-    connect(*socket,&SocketCommun::newBoard,this,&DialogTypeJoueur::finDiag,Qt::UniqueConnection);
+    connect(*socket,&SocketCommun::newBoard,this,&DialogTypeJoueur::finDiag);
     (*socket)->sendJoueurType(joueur);
 }
 
 void DialogTypeJoueur::finDiag(){
+    disconnect(*socket,&SocketCommun::newBoard,this,&DialogTypeJoueur::finDiag);
     ui->radioButton_espion->setEnabled(true);
     ui->radioButton_agent->setEnabled(true);
     ui->pushButton->setEnabled(true);
@@ -43,6 +45,14 @@ void DialogTypeJoueur::finDiag(){
 
 void DialogTypeJoueur::closeEvent(QCloseEvent* event){
     event->ignore();
+}
+
+void DialogTypeJoueur::closeFromParent(){
+    ui->radioButton_espion->setEnabled(true);
+    ui->radioButton_agent->setEnabled(true);
+    ui->pushButton->setEnabled(true);
+    ui->label->setText("Choix du camp");
+    hide();
 }
 
 DialogTypeJoueur::~DialogTypeJoueur(){

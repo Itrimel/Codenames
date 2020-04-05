@@ -15,6 +15,8 @@ class DialogIP : public QDialog
 public:
     DialogIP(QWidget*, QHostAddress*, quint16*,SocketCommun**);
     ~DialogIP();
+public slots:
+    void reject() override {};
 private:
     Ui::Client1* ui;
     QHostAddress* address;
@@ -25,7 +27,7 @@ private slots:
     void connexion();
     void erreur(SocketCommun*,QAbstractSocket::SocketError);
     void finDiag();
-
+    void quitterProgramme();
 };
 
 #endif // DIALOGIP_H

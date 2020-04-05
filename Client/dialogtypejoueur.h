@@ -15,6 +15,9 @@ class DialogTypeJoueur : public QDialog
 public:
     DialogTypeJoueur(QWidget*, SocketCommun**);
     ~DialogTypeJoueur();
+    void closeFromParent();
+public slots:
+    void reject() override {};
 private:
     SocketCommun** socket;
     Ui::Dialog* ui;

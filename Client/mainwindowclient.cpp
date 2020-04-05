@@ -81,6 +81,7 @@ void MainWindowClient::guessCarte(char nb, typeCarte type){
 
 void MainWindowClient::erreur(SocketCommun* comm, QAbstractSocket::SocketError err){
     qDebug() << "Erreur connexion : " << err;
+    dialogueType->closeFromParent();
     communication->deleteLater();
     dialogueIP->open();
 }
