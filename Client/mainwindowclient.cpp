@@ -44,6 +44,7 @@ void MainWindowClient::changerBoard(){
         ui->gridLayout->removeWidget(*i);
         delete *i;
     }
+    label_qui_commence->hide();
     liste_cartes->clear();
 
     for(int i=0; i<25; i++){
@@ -66,7 +67,11 @@ void MainWindowClient::changerBoard(){
        }
        ui->gridLayout->addWidget(label_qui_commence,0,0,1,5,Qt::AlignCenter);
        ui->gridLayout->setRowStretch(0,1);
+       label_qui_commence->show();
        for(int i = 1; i<6; ui->gridLayout->setRowStretch(i++,4));
+   } else {
+        for(int i = 0; i<5; ui->gridLayout->setRowStretch(i++,4)){};
+        ui->gridLayout->setRowStretch(5,0);
    }
     connect(communication,&SocketCommun::carteUpdate,this,&MainWindowClient::guessCarte,Qt::UniqueConnection);
 

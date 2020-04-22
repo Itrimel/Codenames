@@ -25,7 +25,6 @@ public:
     void sendBoard(std::vector<data_carte>*);
     void sendUpdate(char,typeCarte);
     void sendPing();
-    void sendAskType();
     void sendJoueurType(typeJoueur);
     QHostAddress inline getAddr() {return adresse;}
     quint16 inline getPrt() {return port;}
@@ -41,6 +40,7 @@ signals:
     void erreurCo(SocketCommun*,QAbstractSocket::SocketError);
 public slots:
     void sendGuess(int);
+    void sendAskType();
 private:
     QTcpSocket* socket;
     const QHostAddress adresse;
