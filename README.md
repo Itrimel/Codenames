@@ -7,6 +7,14 @@ Petit projet fait sous confinement pour pouvoir jouer au jeu Codenames via ordin
  - Une connexion internet pour le jeu à distance, un routeur (box internet, hotspot WiFi ...) pour le jeu en local
  - Si sous Linux, une ordinateur 64-bits et les librairies partagées Qt5 (qt5-base, qt5-default ... en fonction de votre distribution)
 
+### Configuration du serveur
+
+Il faut configurer le routeur de telle sorte qu'il redirige toutes les informations arrivant sur le port 8081 vers le serveur. Pour cela, il faut créer une règle NAT (Google est votre ami pour comment faire sur votre routeur) avec :
+ - Protocole : TCP
+ - Port externe : 8081
+ - Port interne : 8081
+ - Poste : Nom (ou adresse IP locale) de l'ordinateur sur lequel tourne le serveur
+
 ## Utilisation
 
  - [Télecharger](https://github.com/Itrimel/Codenames/releases/latest) le Codenames-client correspondant à votre système
@@ -48,3 +56,4 @@ make
  - [x] Meilleure gestion des erreurs de connexion
  - [ ] Ajouter un système de mot de passe pour limiter le nombre de personnes pouvant se connecter en tant qu'agent et/ou espion
  - [ ] Créer un client tournant sur Nintendo Switch
+ - [ ] Utiliser UPnP pour le serveur
