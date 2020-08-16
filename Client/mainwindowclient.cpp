@@ -52,10 +52,14 @@ void MainWindowClient::changerBoard(){
         carte = new QCard(i,communication->plateau_courant[i].type,communication->plateau_courant[i].carte,liste_cartes,ui->centralwidget);
         liste_cartes->emplace_back(carte);
         ui->gridLayout->addWidget(carte,i%5+(int)(joueur==Espion),i/5);
-        if(carte->getType()==Rouge) {count++;}
+        if(carte->getType()==Rouge){
+            count++;
+        }
+        if(communication->plateau_courant[i].guessed){
+            carte->setGuess();
+        }
         if(joueur==Agent){
             connect(carte,&QCard::cardClicked,communication,&SocketCommun::sendGuess);
-            if(carte->getType()!=SaisPas){ carte->setGuess();}
         }
     }
     if(joueur==Espion) {

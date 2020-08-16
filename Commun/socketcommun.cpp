@@ -104,7 +104,7 @@ bool SocketCommun::gererNewBoard(char* message, uint32_t length){
         } else {
             mots[curr_mot]=curr_len;
             curr_len=0;
-            pos+=2;
+            pos+=3;
             if(pos>length){
                 return false;
             }
@@ -118,7 +118,8 @@ bool SocketCommun::gererNewBoard(char* message, uint32_t length){
         carte_courante.carte = QString(message+pos);
         pos+=mots[curr_mot]+1;
         carte_courante.type = (typeCarte)(message[pos]);
-        pos+=1;
+        carte_courante.guessed = (bool)(message[pos+1]);
+        pos+=2;
         plateau_courant[curr_mot]=carte_courante;
     }
     return true;
@@ -137,7 +138,8 @@ void SocketCommun::sendBoard(std::vector<data_carte>* liste_cartes){
         position+=len+1;
         buffer[position-1+sizeof(header)]=0;
         buffer[position+sizeof(header)]=(char)liste_cartes->at(i).type;
-        position+=1;
+        buffer[position+1+sizeof(header)] = liste_cartes->at(i).guessed ? 1 : 0;
+        position+=2;
     }
     header.length=position;
     memcpy(buffer,&header,sizeof(header));

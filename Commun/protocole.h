@@ -19,7 +19,7 @@ enum typeJoueur : char {
 
 enum message_type : uint8_t {
     MSG_TYPE_NOP            = 0,
-    MSG_TYPE_BOARD          = 1, // Format : nom + 0 + typeCarte + 0 + nom ....
+    MSG_TYPE_BOARD          = 1, // Format : nom + 0 + typeCarte + 0/1 si guess déjà + nom ....
     MSG_TYPE_GUESS          = 2, // Format : un char, position de la carte
     MSG_TYPE_UPDATE         = 3,
     MSG_TYPE_PING           = 4,
