@@ -1,4 +1,6 @@
 #include "serveurconnexions.h"
+#include <QTcpServer>
+#include <QRandomGenerator>
 
 
 auto ServeurConnexions::findTypeJoueur(SocketCommun* socket, typeJoueur* joueur){

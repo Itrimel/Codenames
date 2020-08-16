@@ -1,14 +1,13 @@
 #ifndef QGLOBAIPDIAG_H
 #define QGLOBAIPDIAG_H
 
-#include <QTimer>
 #include <QLabel>
-#include <QMessageBox>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QNetworkReply>
-#include <QUrlQuery>
+
 #include "serveur_internet_infos.h"
+
+class QNetworkReply;
+class QNetworkAccessManager;
+class QTimer;
 
 class ExtIPGet : public QObject
 {
@@ -16,13 +15,7 @@ class ExtIPGet : public QObject
 
 public:
     ExtIPGet(QObject*, QLabel*);
-    ~ExtIPGet(){
-        if(!gotReply){
-            update_add->stop();
-        }
-        manager->deleteLater();
-        delete update_add;
-    }
+    ~ExtIPGet();
 signals:
     void setExtIP(QString);
 

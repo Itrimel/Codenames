@@ -1,6 +1,7 @@
 #include "mainwindowclient.h"
 #include "ui_client1.h"
 #include "ui_client2.h"
+#include <QLabel>
 
 MainWindowClient::MainWindowClient(QWidget *parent)
     : QMainWindow(parent)
@@ -84,7 +85,7 @@ void MainWindowClient::guessCarte(char nb, typeCarte type){
     liste_cartes->at(nb)->setGuess();
 }
 
-void MainWindowClient::erreur(SocketCommun* comm, QAbstractSocket::SocketError err){
+void MainWindowClient::erreur(SocketCommun*, QAbstractSocket::SocketError err){
     qDebug() << "Erreur connexion : " << err;
     dialogueType->closeFromParent();
     communication->deleteLater();

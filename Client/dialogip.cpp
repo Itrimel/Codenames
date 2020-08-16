@@ -1,5 +1,6 @@
 #include "dialogip.h"
 #include "ui_client1.h"
+#include <QCloseEvent>
 
 
 DialogIP::DialogIP(QWidget* parent, QHostAddress* address,quint16* port,SocketCommun** socket):

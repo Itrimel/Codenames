@@ -1,4 +1,9 @@
 #include "extipget.h"
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QUrlQuery>
+#include <QNetworkReply>
+#include <QTimer>
 
 ExtIPGet::ExtIPGet(QObject* parent,QLabel* label):
     QObject(parent),
@@ -43,5 +48,13 @@ void ExtIPGet::update_text(){
     }
     label->setText(temp);
     nb_points=(nb_points+1)%4;
+}
+
+ExtIPGet::~ExtIPGet(){
+    if(!gotReply){
+        update_add->stop();
+    }
+    manager->deleteLater();
+    delete update_add;
 }
 

@@ -2,7 +2,6 @@
 #define DIALOGIP_H
 
 #include <QDialog>
-#include <QCloseEvent>
 #include "Commun/socketcommun.h"
 
 QT_BEGIN_NAMESPACE

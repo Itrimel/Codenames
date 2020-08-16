@@ -2,11 +2,6 @@
 #define QCARD_H
 
 #include <QWidget>
-#include <QObject>
-#include <QPainter>
-#include <QFontMetrics>
-#include <QMouseEvent>
-#include <algorithm>
 #include "protocole.h"
 
 class QCard : public QWidget

@@ -1,5 +1,6 @@
 #include "dialogtypejoueur.h"
 #include "ui_dialogtypejoueur.h"
+#include <QCloseEvent>
 
 DialogTypeJoueur::DialogTypeJoueur(QWidget* parent, SocketCommun** socket):
     QDialog(parent,Qt::WindowTitleHint | Qt::WindowSystemMenuHint),

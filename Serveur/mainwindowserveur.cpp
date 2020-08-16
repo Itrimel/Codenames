@@ -1,5 +1,8 @@
 #include "mainwindowserveur.h"
 #include "ui_serveur.h"
+#include <QNetworkInterface>
+
+static void setIPLocal(QLabel*);
 
 MainWindowServeur::MainWindowServeur(QWidget *parent)
     : QMainWindow(parent)

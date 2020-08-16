@@ -1,9 +1,6 @@
 #ifndef WIDGETCONNEXION_H
 #define WIDGETCONNEXION_H
 
-#include <QTcpServer>
-#include <QTcpSocket>
-#include <QRandomGenerator>
 #include "serveur_internet_infos.h"
 #include "Commun/protocole.h"
 #include "Commun/socketcommun.h"
@@ -15,6 +12,8 @@ enum etatCo{
     Dropping,
     EchecCo
 };
+
+class QTcpServer;
 
 class ServeurConnexions : public QObject
 {

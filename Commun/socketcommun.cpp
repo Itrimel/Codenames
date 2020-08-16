@@ -1,4 +1,6 @@
 #include "socketcommun.h"
+#include <QVector>
+#include <QTcpSocket>
 
 SocketCommun::SocketCommun(QHostAddress adresse, quint16 port, QObject* parent = nullptr):
     QObject(parent),
@@ -6,7 +8,7 @@ SocketCommun::SocketCommun(QHostAddress adresse, quint16 port, QObject* parent =
     port(port)
 {
     socket = new QTcpSocket(parent);
-    connect(socket,qOverload<QAbstractSocket::SocketError>(&QTcpSocket::error),this,&SocketCommun::gererErreurCo);
+    connect(socket,&QTcpSocket::errorOccurred,this,&SocketCommun::gererErreurCo);
 }
 
 SocketCommun::SocketCommun(QTcpSocket* sock):
@@ -29,8 +31,8 @@ void SocketCommun::lancerCo(){
 
 void SocketCommun::coEtablie(){
     connect(socket,&QTcpSocket::readyRead,this,&SocketCommun::readMessage);
-    disconnect(socket,qOverload<QAbstractSocket::SocketError>(&QTcpSocket::error),this,&SocketCommun::gererErreurCo);
-    connect(socket,qOverload<QAbstractSocket::SocketError>(&QTcpSocket::error),this,&SocketCommun::gererErreur);
+    disconnect(socket,&QTcpSocket::errorOccurred,this,&SocketCommun::gererErreurCo);
+    connect(socket,&QTcpSocket::errorOccurred,this,&SocketCommun::gererErreur);
 }
 
 void SocketCommun::getNewBoard(){
@@ -91,7 +93,7 @@ void SocketCommun::readMessage(){
 
 bool SocketCommun::gererNewBoard(char* message, uint32_t length){
     data_carte carte_courante;
-    int pos=0, curr_len=0,curr_mot=0;
+    unsigned int pos=0, curr_len=0,curr_mot=0;
     int mots[25];
     while(true){
         if(message[pos]!=0){
@@ -190,3 +192,5 @@ void SocketCommun::gererErreur(QAbstractSocket::SocketError err){
 void SocketCommun::gererErreurCo(QAbstractSocket::SocketError err){
     emit erreurCo(this,err);
 }
+
+QAbstractSocket::SocketState inline SocketCommun::stateSocket() {return socket->state();}

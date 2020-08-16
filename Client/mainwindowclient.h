@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QLabel>
 #include "dialogtypejoueur.h"
 #include "dialogip.h"
 #include "Commun/socketcommun.h"
@@ -11,6 +10,8 @@
 QT_BEGIN_NAMESPACE
 namespace Ui {class Client2; }
 QT_END_NAMESPACE
+
+class QLabel;
 
 class MainWindowClient : public QMainWindow
 {

@@ -1,4 +1,9 @@
 #include "qcard.h"
+#include <QPainter>
+#include <QPainterPath>
+#include <QFontMetrics>
+#include <QMouseEvent>
+#include <algorithm>
 
 
 bool static compQCardsFontSizes(const QCard* A,const QCard* B){
@@ -15,7 +20,7 @@ void QCard::findRightFontSize(QString mot, QRect rect, QFont font){
     rightFontSize = font.pointSizeF()*scale;
 }
 
-void QCard::paintEvent(QPaintEvent* event){
+void QCard::paintEvent(QPaintEvent*){
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
     painter.save();
@@ -76,11 +81,11 @@ void QCard::paintEvent(QPaintEvent* event){
     painter.drawText(zone_texte,Qt::AlignCenter,mot);
 }
 
-void QCard::enterEvent(QEvent* event){
+void QCard::enterEvent(QEvent*){
     drawGuessed=false;
     this->update();
 }
-void QCard::leaveEvent(QEvent* event){
+void QCard::leaveEvent(QEvent*){
     drawGuessed=isGuessed;
     this->update();
 }

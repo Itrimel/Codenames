@@ -1,9 +1,7 @@
 #ifndef SOCKETCOMMUN_H
 #define SOCKETCOMMUN_H
 
-#include <QTcpSocket>
 #include <QHostAddress>
-#include <QVector>
 #include "Commun/protocole.h"
 
 struct data_carte{
@@ -11,6 +9,8 @@ struct data_carte{
     typeCarte type;
     bool guessed = false;
 };
+
+class QTcpSocket;
 
 class SocketCommun : public QObject
 {
@@ -28,7 +28,7 @@ public:
     void sendJoueurType(typeJoueur);
     QHostAddress inline getAddr() {return adresse;}
     quint16 inline getPrt() {return port;}
-    QAbstractSocket::SocketState inline stateSocket() {return socket->state();}
+    QAbstractSocket::SocketState stateSocket() ;
 signals:
     void newBoard();
     void carteUpdate(char,typeCarte);

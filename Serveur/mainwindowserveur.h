@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QNetworkInterface>
 #include "serveurconnexions.h"
 #include "extipget.h"
 
@@ -27,5 +26,4 @@ private slots:
     void setExtIP(QString);
 };
 
-static void setIPLocal(QLabel*);
 #endif // MAINWINDOW_H
