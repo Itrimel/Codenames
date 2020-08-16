@@ -93,7 +93,7 @@ void SocketCommun::readMessage(){
 
 bool SocketCommun::gererNewBoard(char* message, uint32_t length){
     data_carte carte_courante;
-    unsigned int pos=0, curr_len=0,curr_mot=0;
+    unsigned int pos=1, curr_len=0,curr_mot=0;
     int mots[25];
     while(true){
         if(message[pos]!=0){
@@ -113,7 +113,8 @@ bool SocketCommun::gererNewBoard(char* message, uint32_t length){
             }
         }
     }
-    pos=0;
+    bleuCommence = message[0];
+    pos=1;
     for(curr_mot=0;curr_mot<25;curr_mot++){
         carte_courante.carte = QString(message+pos);
         pos+=mots[curr_mot]+1;
@@ -127,10 +128,13 @@ bool SocketCommun::gererNewBoard(char* message, uint32_t length){
 
 void SocketCommun::sendBoard(std::vector<data_carte>* liste_cartes){
     char buffer[1000]; //Ca devrait aller, il y a pas de mots de plus de 35 caractères en français
-    int position=0,len;
+    int position=1,len;
     std::string mot;
     message_header header;
     header.type=MSG_TYPE_BOARD;
+    buffer[0] = std::count_if(liste_cartes->begin(),liste_cartes->end(),
+                              [] (data_carte carte) {return carte.type==Bleu;})
+                              == 9? 1: 0;
     for(int i=0; i<25; i++){
         mot = liste_cartes->at(i).carte.toStdString();
         len = mot.length();

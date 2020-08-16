@@ -21,6 +21,7 @@ public:
     void lancerCo();
     void getNewBoard();
     QVector<data_carte> plateau_courant=QVector<data_carte>(25);
+    bool bleuCommence;
     void readMessage();
     void sendBoard(std::vector<data_carte>*);
     void sendUpdate(char,typeCarte);
